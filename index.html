@@ -114,6 +114,41 @@
             </div>
         </div>
 
+        <!-- 프로모션 배너 -->
+        <div class="promotion-banner">
+            <div class="promotion-container">
+                <div class="promotion-title">
+                    <span class="lightning-icon">⚡</span>
+                    <h2>
+                        <span class="promo-text-black">프로모션</span>
+                        <span class="promo-text-white"> 종료까지 남은 시간</span>
+                    </h2>
+                    <span class="lightning-icon">⚡</span>
+                </div>
+                <div class="promotion-countdown">
+                    <div class="countdown-box">
+                        <div class="countdown-number" id="promo-days">5</div>
+                        <div class="countdown-label">일</div>
+                    </div>
+                    <div class="countdown-box">
+                        <div class="countdown-number" id="promo-hours">13</div>
+                        <div class="countdown-label">시</div>
+                    </div>
+                    <div class="countdown-box">
+                        <div class="countdown-number" id="promo-minutes">1</div>
+                        <div class="countdown-label">분</div>
+                    </div>
+                    <div class="countdown-box">
+                        <div class="countdown-number" id="promo-seconds">17</div>
+                        <div class="countdown-label">초</div>
+                    </div>
+                </div>
+                <div class="promotion-disclaimer">
+                    본 행사는 한정 재고 완판 시, 조기 종료 될 수 있습니다.
+                </div>
+            </div>
+        </div>
+
         <!-- 타임딜 차량 섹션 -->
         <div id="best" class="time-deal-section">
         <div class="container">
@@ -121,8 +156,17 @@
                 <p>놓치기 아쉬운 특별한 가격!</p>
                 <h2><span class="bold">타임딜 차량</span><i class="icoAni"><img src="https://cdn-icons-png.flaticon.com/512/3114/3114888.png" alt="시계" style="width: 24px; height: 24px;"></i></h2>
             </div>
-            <div class="car-grid-container">
-                <ul class="bestList car-grid">
+            
+            <!-- 탭 메뉴 -->
+            <div class="car-tabs">
+                <button class="car-tab active" data-tab="domestic">국산</button>
+                <button class="car-tab" data-tab="import">수입</button>
+            </div>
+
+            <!-- 국산 차량 -->
+            <div class="car-tab-content active" data-tab="domestic">
+                <div class="car-grid-container">
+                    <ul class="bestList car-grid domestic-cars">
                     <!-- 현대 디 올 뉴 팰리세이드 -->
                     <li class="list">
                         <div class="img">
@@ -497,12 +541,12 @@
                             </form>
                         </div>
                     </li>
-                    <!-- BMW 5 Series -->
+                    <!-- 기아 셀토스 -->
                     <li class="list">
                         <div class="img">
-                            <img class="img-responsive" src="images/car/bmw-5.png" alt="BMW 5 Series">
-                            <div class="edge"><span class="brand-badge">BMW</span></div>
-                            <div class="cartxt01">차량가 78,500,000원</div>
+                            <img class="img-responsive" src="images/car/seltos.png" alt="기아 셀토스">
+                            <div class="edge"><span class="brand-badge">기아</span></div>
+                            <div class="cartxt01">차량가 28,500,000원</div>
                             <div class="cartxt0101">선납금30%/48개월/주행거리2만KM/만 26세이상 기준</div>
                         </div>
                         <div class="carinfoWrap">
@@ -516,27 +560,27 @@
                             </div>
                             <div class="carinfo">
                                 <div class="carname">
-                                    <h3>BMW 5 Series</h3>
-                                    <p style="font-size:11px;">2025년형 가솔린 터보 2.0 개별소비세 인하 520d (A/T)</p>
+                                    <h3>기아 셀토스</h3>
+                                    <p style="font-size:11px;">2025년형 가솔린 터보 1.5 하이브리드 개별소비세 인하 프레스티지 (A/T)</p>
                                 </div>
                                 <div class="carprice">
-                                    <div class="won">월 <span class="big bold">520,000</span> 원</div>
-                                    <p>577,778 원</p>
+                                    <div class="won">월 <span class="big bold">220,000</span> 원</div>
+                                    <p>244,444 원</p>
                                 </div>
                             </div>
                             <form>
                                 <div class="formbox">
-                                    <a href="javascript:;" class="bestBtn counselBtn" data-maker="BMW" data-model="5 Series" data-pos="특판">실시간 할인가 조회</a>
+                                    <a href="javascript:;" class="bestBtn counselBtn" data-maker="기아" data-model="셀토스" data-pos="특판">실시간 할인가 조회</a>
                                 </div>
                             </form>
                         </div>
                     </li>
-                    <!-- 벤츠 E-Class -->
+                    <!-- 기아 니로 -->
                     <li class="list">
                         <div class="img">
-                            <img class="img-responsive" src="images/car/e-class.png" alt="벤츠 E-Class">
-                            <div class="edge"><span class="brand-badge">벤츠</span></div>
-                            <div class="cartxt01">차량가 75,200,000원</div>
+                            <img class="img-responsive" src="images/car/kia-niro.png" alt="기아 니로">
+                            <div class="edge"><span class="brand-badge">기아</span></div>
+                            <div class="cartxt01">차량가 28,870,000원</div>
                             <div class="cartxt0101">선납금30%/48개월/주행거리2만KM/만 26세이상 기준</div>
                         </div>
                         <div class="carinfoWrap">
@@ -550,17 +594,51 @@
                             </div>
                             <div class="carinfo">
                                 <div class="carname">
-                                    <h3>벤츠 E-Class</h3>
-                                    <p style="font-size:11px;">2025년형 가솔린 터보 2.0 개별소비세 인하 E220d (A/T)</p>
+                                    <h3>기아 니로</h3>
+                                    <p style="font-size:11px;">2025년형 가솔린 1.6 하이브리드 사양변경-개별소비세 인하 트렌디 (A/T)</p>
                                 </div>
                                 <div class="carprice">
-                                    <div class="won">월 <span class="big bold">498,000</span> 원</div>
-                                    <p>553,333 원</p>
+                                    <div class="won">월 <span class="big bold">251,880</span> 원</div>
+                                    <p>279,867 원</p>
                                 </div>
                             </div>
                             <form>
                                 <div class="formbox">
-                                    <a href="javascript:;" class="bestBtn counselBtn" data-maker="벤츠" data-model="E-Class" data-pos="특판">실시간 할인가 조회</a>
+                                    <a href="javascript:;" class="bestBtn counselBtn" data-maker="기아" data-model="니로" data-pos="특판">실시간 할인가 조회</a>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+                    <!-- 기아 레이 EV -->
+                    <li class="list">
+                        <div class="img">
+                            <img class="img-responsive tilt-back" src="images/car/kia-ray.png" alt="기아 레이 EV">
+                            <div class="edge"><span class="brand-badge">기아</span></div>
+                            <div class="cartxt01">차량가 25,800,000원</div>
+                            <div class="cartxt0101">선납금30%/48개월/주행거리2만KM/만 26세이상 기준</div>
+                        </div>
+                        <div class="carinfoWrap">
+                            <div class="dateCount">
+                                <div class="circle count-day">30<span>일</span></div>
+                                <div class="circle count-hour">1</div>
+                                <div class="txt">:</div>
+                                <div class="circle count-min">15</div>
+                                <div class="txt">:</div>
+                                <div class="circle count-sec">39</div>
+                            </div>
+                            <div class="carinfo">
+                                <div class="carname">
+                                    <h3>기아 레이 EV</h3>
+                                    <p style="font-size:11px;">2025년형 전기 개별소비세 인하 에어 (A/T)</p>
+                                </div>
+                                <div class="carprice">
+                                    <div class="won">월 <span class="big bold">180,000</span> 원</div>
+                                    <p>200,000 원</p>
+                                </div>
+                            </div>
+                            <form>
+                                <div class="formbox">
+                                    <a href="javascript:;" class="bestBtn counselBtn" data-maker="기아" data-model="레이 EV" data-pos="특판">실시간 할인가 조회</a>
                                 </div>
                             </form>
                         </div>
@@ -599,7 +677,227 @@
                             </form>
                         </div>
                     </li>
+                    <!-- 기타 차량 문의 -->
+                    <li class="list">
+                        <div class="img">
+                            <img class="img-responsive" src="images/car/kita-muni.png" alt="기타 차량 문의">
+                            <div class="edge"><span class="brand-badge">문의</span></div>
+                            <div class="cartxt01">차량 문의</div>
+                            <div class="cartxt0101">원하시는 차량을 문의해주세요</div>
+                        </div>
+                        <div class="carinfoWrap">
+                            <div class="dateCount">
+                                <div class="circle count-day">30<span>일</span></div>
+                                <div class="circle count-hour">1</div>
+                                <div class="txt">:</div>
+                                <div class="circle count-min">15</div>
+                                <div class="txt">:</div>
+                                <div class="circle count-sec">39</div>
+                            </div>
+                            <div class="carinfo">
+                                <div class="carname">
+                                    <h3>기타 차량 문의</h3>
+                                    <p style="font-size:11px;">원하시는 차량이 없으신가요? 문의해주시면 신속하게 견적을 제공해드립니다.</p>
+                                </div>
+                                <div class="carprice">
+                                    <div class="won">문의 <span class="big bold">상담</span> 가능</div>
+                                    <p>빠른 견적 제공</p>
+                                </div>
+                            </div>
+                            <form>
+                                <div class="formbox">
+                                    <a href="javascript:;" class="bestBtn counselBtn" data-maker="기타" data-model="차량 문의" data-pos="특판">차량 문의하기</a>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
                 </ul>
+            </div>
+            </div>
+
+            <!-- 수입 차량 -->
+            <div class="car-tab-content" data-tab="import">
+                <div class="car-grid-container">
+                    <ul class="bestList car-grid import-cars">
+                        <!-- BMW 5 Series -->
+                        <li class="list">
+                            <div class="img">
+                                <img class="img-responsive" src="images/car/bmw-5.png" alt="BMW 5 Series">
+                                <div class="edge"><span class="brand-badge">BMW</span></div>
+                                <div class="cartxt01">차량가 78,500,000원</div>
+                                <div class="cartxt0101">선납금30%/48개월/주행거리2만KM/만 26세이상 기준</div>
+                            </div>
+                            <div class="carinfoWrap">
+                                <div class="dateCount">
+                                    <div class="circle count-day">30<span>일</span></div>
+                                    <div class="circle count-hour">1</div>
+                                    <div class="txt">:</div>
+                                    <div class="circle count-min">15</div>
+                                    <div class="txt">:</div>
+                                    <div class="circle count-sec">39</div>
+                                </div>
+                                <div class="carinfo">
+                                    <div class="carname">
+                                        <h3>BMW 5 Series</h3>
+                                        <p style="font-size:11px;">2025년형 가솔린 터보 2.0 개별소비세 인하 520i (A/T)</p>
+                                    </div>
+                                    <div class="carprice">
+                                        <div class="won">월 <span class="big bold">520,000</span> 원</div>
+                                        <p>577,778 원</p>
+                                    </div>
+                                </div>
+                                <form>
+                                    <div class="formbox">
+                                        <a href="javascript:;" class="bestBtn counselBtn" data-maker="BMW" data-model="5 Series" data-pos="특판">실시간 할인가 조회</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <!-- 벤츠 E-Class -->
+                        <li class="list">
+                            <div class="img">
+                                <img class="img-responsive" src="images/car/e-class.png" alt="벤츠 E-Class">
+                                <div class="edge"><span class="brand-badge">벤츠</span></div>
+                                <div class="cartxt01">차량가 75,200,000원</div>
+                                <div class="cartxt0101">선납금30%/48개월/주행거리2만KM/만 26세이상 기준</div>
+                            </div>
+                            <div class="carinfoWrap">
+                                <div class="dateCount">
+                                    <div class="circle count-day">30<span>일</span></div>
+                                    <div class="circle count-hour">1</div>
+                                    <div class="txt">:</div>
+                                    <div class="circle count-min">15</div>
+                                    <div class="txt">:</div>
+                                    <div class="circle count-sec">39</div>
+                                </div>
+                                <div class="carinfo">
+                                    <div class="carname">
+                                        <h3>벤츠 E-Class</h3>
+                                        <p style="font-size:11px;">2025년형 가솔린 터보 2.0 개별소비세 인하 E220d (A/T)</p>
+                                    </div>
+                                    <div class="carprice">
+                                        <div class="won">월 <span class="big bold">498,000</span> 원</div>
+                                        <p>553,333 원</p>
+                                    </div>
+                                </div>
+                                <form>
+                                    <div class="formbox">
+                                        <a href="javascript:;" class="bestBtn counselBtn" data-maker="벤츠" data-model="E-Class" data-pos="특판">실시간 할인가 조회</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <!-- 테슬라 Model Y -->
+                        <li class="list">
+                            <div class="img">
+                                <img class="img-responsive" src="images/car/tesla-y.png" alt="테슬라 Model Y">
+                                <div class="edge"><span class="brand-badge">테슬라</span></div>
+                                <div class="cartxt01">차량가 65,000,000원</div>
+                                <div class="cartxt0101">선납금30%/48개월/주행거리2만KM/만 26세이상 기준</div>
+                            </div>
+                            <div class="carinfoWrap">
+                                <div class="dateCount">
+                                    <div class="circle count-day">30<span>일</span></div>
+                                    <div class="circle count-hour">1</div>
+                                    <div class="txt">:</div>
+                                    <div class="circle count-min">15</div>
+                                    <div class="txt">:</div>
+                                    <div class="circle count-sec">39</div>
+                                </div>
+                                <div class="carinfo">
+                                    <div class="carname">
+                                        <h3>테슬라 Model Y</h3>
+                                        <p style="font-size:11px;">2025년형 전기 개별소비세 인하 롱레인지 (A/T)</p>
+                                    </div>
+                                    <div class="carprice">
+                                        <div class="won">월 <span class="big bold">450,000</span> 원</div>
+                                        <p>500,000 원</p>
+                                    </div>
+                                </div>
+                                <form>
+                                    <div class="formbox">
+                                        <a href="javascript:;" class="bestBtn counselBtn" data-maker="테슬라" data-model="Model Y" data-pos="특판">실시간 할인가 조회</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <!-- 테슬라 Model Y Junifer -->
+                        <li class="list">
+                            <div class="img">
+                                <img class="img-responsive" src="images/car/junifer.png" alt="테슬라 Model Y Junifer">
+                                <div class="edge"><span class="brand-badge">테슬라</span></div>
+                                <div class="cartxt01">차량가 70,000,000원</div>
+                                <div class="cartxt0101">선납금30%/48개월/주행거리2만KM/만 26세이상 기준</div>
+                            </div>
+                            <div class="carinfoWrap">
+                                <div class="dateCount">
+                                    <div class="circle count-day">30<span>일</span></div>
+                                    <div class="circle count-hour">1</div>
+                                    <div class="txt">:</div>
+                                    <div class="circle count-min">15</div>
+                                    <div class="txt">:</div>
+                                    <div class="circle count-sec">39</div>
+                                </div>
+                                <div class="carinfo">
+                                    <div class="carname">
+                                        <h3>테슬라 Model Y Junifer</h3>
+                                        <p style="font-size:11px;">2025년형 전기 개별소비세 인하 퍼포먼스 (A/T)</p>
+                                    </div>
+                                    <div class="carprice">
+                                        <div class="won">월 <span class="big bold">485,000</span> 원</div>
+                                        <p>538,889 원</p>
+                                    </div>
+                                </div>
+                                <form>
+                                    <div class="formbox">
+                                        <a href="javascript:;" class="bestBtn counselBtn" data-maker="테슬라" data-model="Model Y Junifer" data-pos="특판">실시간 할인가 조회</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                        <!-- 기타 차량 문의 -->
+                        <li class="list">
+                            <div class="img">
+                                <img class="img-responsive" src="images/car/kita-muni.png" alt="기타 차량 문의">
+                                <div class="edge"><span class="brand-badge">문의</span></div>
+                                <div class="cartxt01">차량 문의</div>
+                                <div class="cartxt0101">원하시는 차량을 문의해주세요</div>
+                            </div>
+                            <div class="carinfoWrap">
+                                <div class="dateCount">
+                                    <div class="circle count-day">30<span>일</span></div>
+                                    <div class="circle count-hour">1</div>
+                                    <div class="txt">:</div>
+                                    <div class="circle count-min">15</div>
+                                    <div class="txt">:</div>
+                                    <div class="circle count-sec">39</div>
+                                </div>
+                                <div class="carinfo">
+                                    <div class="carname">
+                                        <h3>기타 차량 문의</h3>
+                                        <p style="font-size:11px;">원하시는 차량이 없으신가요? 문의해주시면 신속하게 견적을 제공해드립니다.</p>
+                                    </div>
+                                    <div class="carprice">
+                                        <div class="won">문의 <span class="big bold">상담</span> 가능</div>
+                                        <p>빠른 견적 제공</p>
+                                    </div>
+                                </div>
+                                <form>
+                                    <div class="formbox">
+                                        <a href="javascript:;" class="bestBtn counselBtn" data-maker="기타" data-model="차량 문의" data-pos="특판">차량 문의하기</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 사업자 정보 -->
+            <div class="company-info">
+                <p>사업자등록번호: 249-19-02338</p>
+                <p>회사명: 씨엠오토플랜</p>
+                <p>주소: 인천광역시 서구 이음대로 392, 7층 701호(원당동, 매트로시티)</p>
             </div>
         </div>
         </div>

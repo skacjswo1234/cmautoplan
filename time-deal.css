@@ -1,8 +1,168 @@
+/* 프로모션 배너 */
+.promotion-banner {
+    width: 100%;
+    background: #1a1f3a;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 30%),
+        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.1) 0%, transparent 30%),
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+    background-size: 200px 200px, 200px 200px, 100% 100%, 100% 100%;
+    background-position: 0% 0%, 100% 100%, 0% 0%, 100% 100%;
+    padding: 50px 20px;
+    margin-top: 60px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 100px rgba(255, 255, 255, 0.05);
+    animation: gradientShift 8s ease infinite;
+}
+
+.promotion-banner::before {
+    content: '';
+    position: absolute;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    border: 12px solid rgba(255, 255, 255, 0.1);
+    animation: pulse 3s ease-in-out infinite;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+}
+
+.promotion-banner::after {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 20px;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 4s ease-in-out infinite;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: translateY(-50%) scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(-50%) scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes gradientShift {
+    0%, 100% {
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+    50% {
+        background-position: 100% 100%, -100% -100%, 20% 50%, 80% 80%, 0% 0%;
+    }
+}
+
+.promotion-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.promotion-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.promotion-title h2 {
+    font-size: 36px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+.promo-text-black {
+    color: #000;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+.promo-text-white {
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.lightning-icon {
+    font-size: 32px;
+    color: #87CEEB;
+    text-shadow: 0 0 10px rgba(135, 206, 235, 0.5);
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.promotion-countdown {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.countdown-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 30px;
+    min-width: 100px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.countdown-number {
+    font-size: 48px;
+    font-weight: 700;
+    color: #333;
+    line-height: 1;
+}
+
+.countdown-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #FFA500;
+}
+
+.promotion-disclaimer {
+    font-size: 14px;
+    color: #fff;
+    font-weight: 500;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
 /* 타임딜 차량 섹션 */
 .time-deal-section {
     background: #f8f9fa;
     padding: 80px 0;
-    margin-top: 60px;
+    margin-top: 0;
     width: 100%;
 }
 
@@ -40,6 +200,149 @@
 .icoAni {
     display: inline-block;
     animation: rotate 2s linear infinite;
+}
+
+/* 탭 메뉴 */
+.car-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.car-tab {
+    padding: 15px 40px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #e0e0e0;
+    color: #666;
+}
+
+.car-tab.active {
+    background: #ffd700;
+    color: #222;
+}
+
+.car-tab[data-tab="import"].active {
+    background: #007bff;
+    color: #fff;
+}
+
+.car-tab:hover {
+    opacity: 0.8;
+}
+
+/* 탭 컨텐츠 */
+.car-tab-content {
+    display: none;
+}
+
+.car-tab-content.active {
+    display: block;
+}
+
+/* 국산 차량 스타일 */
+.domestic-cars .list {
+    border-top: 4px solid #ffd700;
+}
+
+.domestic-cars .bestBtn {
+    background: #ffd700;
+    color: #222;
+}
+
+.domestic-cars .bestBtn:hover {
+    background: #ffc700;
+}
+
+.domestic-cars .circle {
+    background: #ffd700;
+    color: #222;
+}
+
+.domestic-cars .txt {
+    color: #ffd700;
+}
+
+.domestic-cars .won .big {
+    color: #ff6b35;
+}
+
+/* 수입 차량 스타일 */
+.import-cars .list {
+    border-top: 4px solid #007bff;
+}
+
+.import-cars .bestBtn {
+    background: #007bff;
+    color: #fff;
+}
+
+.import-cars .bestBtn:hover {
+    background: #0056b3;
+}
+
+.import-cars .circle {
+    background: #007bff;
+    color: #fff;
+}
+
+.import-cars .txt {
+    color: #007bff;
+}
+
+.import-cars .won .big {
+    color: #007bff;
+}
+
+/* 기타 차량 문의 카드 */
+.inquiry-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+}
+
+.inquiry-content {
+    text-align: center;
+    padding: 40px;
+}
+
+.inquiry-content h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+.inquiry-content p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.inquiry-btn {
+    min-width: 200px;
+}
+
+/* 사업자 정보 */
+.company-info {
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.8;
+}
+
+.company-info p {
+    margin: 5px 0;
 }
 
 @keyframes rotate {
@@ -94,6 +397,42 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+/* kita-muni 이미지 크기 조정 */
+.list .img img[src*="kita-muni.png"] {
+    width: 75%;
+    height: auto;
+    object-fit: contain;
+    margin: auto;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* kia-ev5 이미지 크기 조정 */
+.list .img img[src*="kia-ev5.png"] {
+    width: 90%;
+    height: auto;
+    object-fit: contain;
+    margin: auto;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* 기아 레이 EV 이미지 뒤로 기울어진 효과 */
+.list .img img.tilt-back {
+    transform: perspective(1000px) rotateY(-15deg) rotateX(5deg);
+    transition: transform 0.3s ease;
+}
+
+.list:hover .img img.tilt-back {
+    transform: perspective(1000px) rotateY(-12deg) rotateX(3deg);
 }
 
 .edge {
@@ -254,6 +593,62 @@
 
 /* 반응형 */
 @media (max-width: 768px) {
+    .promotion-banner {
+        padding: 30px 15px;
+    }
+
+    .promotion-title {
+        flex-wrap: nowrap;
+        gap: 8px;
+    }
+
+    .promotion-title h2 {
+        font-size: 20px;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        gap: 0;
+    }
+
+    .promo-text-black,
+    .promo-text-white {
+        white-space: nowrap;
+    }
+
+    .lightning-icon {
+        font-size: 20px;
+        flex-shrink: 0;
+    }
+
+    .promotion-countdown {
+        gap: 8px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: center;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .promotion-countdown::-webkit-scrollbar {
+        display: none;
+    }
+
+    .countdown-box {
+        padding: 12px 15px;
+        min-width: 60px;
+        flex-shrink: 0;
+    }
+
+    .countdown-number {
+        font-size: 32px;
+    }
+
+    .countdown-label {
+        font-size: 14px;
+    }
+
+    .promotion-disclaimer {
+        font-size: 12px;
+    }
+
     .time-deal-section {
         padding: 40px 0;
     }

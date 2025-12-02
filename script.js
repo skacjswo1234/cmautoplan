@@ -290,7 +290,23 @@ modals.forEach(modal => {
 // 초기화
 updateStepDisplay();
 
-// 타임딜 차량은 그리드 레이아웃으로 표시 (Swiper 제거)
+// 타임딜 차량 탭 전환
+const carTabs = document.querySelectorAll('.car-tab');
+const carTabContents = document.querySelectorAll('.car-tab-content');
+
+carTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        const targetTab = tab.dataset.tab;
+        
+        // 모든 탭 비활성화
+        carTabs.forEach(t => t.classList.remove('active'));
+        carTabContents.forEach(c => c.classList.remove('active'));
+        
+        // 선택된 탭 활성화
+        tab.classList.add('active');
+        document.querySelector(`.car-tab-content[data-tab="${targetTab}"]`)?.classList.add('active');
+    });
+});
 
 // 카운트다운 타이머
 function updateCountdown() {
@@ -335,6 +351,46 @@ function updateCountdown() {
 // 1초마다 카운트다운 업데이트
 setInterval(updateCountdown, 1000);
 updateCountdown();
+
+// 프로모션 배너 카운트다운 업데이트
+function updatePromotionCountdown() {
+    const promoDaysEl = document.getElementById('promo-days');
+    const promoHoursEl = document.getElementById('promo-hours');
+    const promoMinutesEl = document.getElementById('promo-minutes');
+    const promoSecondsEl = document.getElementById('promo-seconds');
+    
+    if (!promoDaysEl || !promoHoursEl || !promoMinutesEl || !promoSecondsEl) return;
+    
+    // 목표 시간 설정 (30일 후)
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + 30);
+    targetDate.setHours(1, 15, 39, 0);
+    
+    const now = new Date();
+    const diff = targetDate - now;
+    
+    if (diff <= 0) {
+        promoDaysEl.textContent = '0';
+        promoHoursEl.textContent = '0';
+        promoMinutesEl.textContent = '0';
+        promoSecondsEl.textContent = '0';
+        return;
+    }
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    promoDaysEl.textContent = days;
+    promoHoursEl.textContent = hours;
+    promoMinutesEl.textContent = minutes;
+    promoSecondsEl.textContent = seconds;
+}
+
+// 1초마다 프로모션 배너 카운트다운 업데이트
+setInterval(updatePromotionCountdown, 1000);
+updatePromotionCountdown();
 
 // 실시간 할인가 조회 버튼 클릭 이벤트
 document.querySelectorAll('.counselBtn').forEach(btn => {
