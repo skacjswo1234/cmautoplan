@@ -27,13 +27,27 @@ export async function onRequestPost(context: { env: Env; request: Request }): Pr
     const body = await request.json();
     
     // 필수 필드 검증
-    const { productType, vehicle, phone, deposit, depositAmount, advanceAmount } = body;
+    const { productType, vehicle, phone, name, deposit, depositAmount, advanceAmount, privacyConsent, thirdPartyConsent, marketingConsent } = body;
     
-    if (!productType || !vehicle || !phone || !deposit) {
+    if (!productType || !vehicle || !phone || !name || !deposit) {
       return new Response(
         JSON.stringify({ 
           success: false, 
           error: '필수 필드가 누락되었습니다.' 
+        }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
+    // 개인정보 동의 확인
+    if (!privacyConsent || !thirdPartyConsent) {
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: '개인정보 수집·이용 및 제3자 제공 동의는 필수입니다.' 
         }),
         { 
           status: 400, 
@@ -69,14 +83,18 @@ export async function onRequestPost(context: { env: Env; request: Request }): Pr
     const db = env['cmautoplan-db'];
     
     const result = await db.prepare(
-      `INSERT INTO estimates (product_type, vehicle, phone, deposit_type, deposit_amount, status)
-       VALUES (?, ?, ?, ?, ?, 'pending')`
+      `INSERT INTO estimates (product_type, vehicle, phone, name, deposit_type, deposit_amount, privacy_consent, third_party_consent, marketing_consent, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')`
     ).bind(
       productType,
       vehicle,
       phone.replace(/[^0-9]/g, ''), // 숫자만 저장
+      name,
       deposit,
-      finalDepositAmount
+      finalDepositAmount,
+      privacyConsent ? 1 : 0,
+      thirdPartyConsent ? 1 : 0,
+      marketingConsent ? 1 : 0
     ).run();
 
     return new Response(

@@ -4,6 +4,10 @@ const surveyData = {
     vehicle: null,
     period: null,
     deposit: null,
+    name: null,
+    privacyConsent: false,
+    thirdPartyConsent: false,
+    marketingConsent: false,
     personalInfo: {}
 };
 
@@ -89,9 +93,10 @@ depositCards.forEach(card => {
             }
         }
         
-        // 무보증 선택 시 바로 다음 단계로 진행 가능
+        // 보증금 선택 후 완료 조건 확인
         if (card.dataset.deposit === 'none') {
-            step4NextBtn.disabled = false;
+            // 무보증 선택 시 보증금 금액은 필요 없지만, 성함과 개인정보 동의는 필요
+            checkStep4Complete();
         } else {
             // 보증금 또는 선수금 선택 시 입력값 확인
             checkDepositInput();
@@ -109,23 +114,78 @@ function checkDepositInput() {
     
     if (depositType === 'deposit' && depositAmountInput) {
         hasValue = depositAmountInput.value.trim().length > 0;
+        if (hasValue) {
+            surveyData.depositAmount = depositAmountInput.value;
+        }
     } else if (depositType === 'advance' && advanceAmountInput) {
         hasValue = advanceAmountInput.value.trim().length > 0;
-    }
-    
-    step4NextBtn.disabled = !hasValue;
-    
-    if (hasValue) {
-        if (depositType === 'deposit') {
-            surveyData.depositAmount = depositAmountInput.value;
-        } else if (depositType === 'advance') {
+        if (hasValue) {
             surveyData.advanceAmount = advanceAmountInput.value;
         }
     }
+    
+    // 보증금/선수금 입력 후 완료 조건 확인 (성함, 개인정보 동의 포함)
+    checkStep4Complete();
 }
 
 depositAmountInput?.addEventListener('input', checkDepositInput);
 advanceAmountInput?.addEventListener('input', checkDepositInput);
+
+// STEP 4: 성함 입력
+const nameInput = document.getElementById('nameInput');
+nameInput?.addEventListener('input', (e) => {
+    surveyData.name = e.target.value.trim();
+    checkStep4Complete();
+});
+
+// STEP 4: 개인정보 동의 체크박스
+const privacyConsent = document.getElementById('privacyConsent');
+const thirdPartyConsent = document.getElementById('thirdPartyConsent');
+const marketingConsent = document.getElementById('marketingConsent');
+
+privacyConsent?.addEventListener('change', (e) => {
+    surveyData.privacyConsent = e.target.checked;
+    checkStep4Complete();
+});
+
+thirdPartyConsent?.addEventListener('change', (e) => {
+    surveyData.thirdPartyConsent = e.target.checked;
+    checkStep4Complete();
+});
+
+marketingConsent?.addEventListener('change', (e) => {
+    surveyData.marketingConsent = e.target.checked;
+    checkStep4Complete();
+});
+
+// 개인정보 동의 링크 클릭 시 모달 열기
+document.querySelectorAll('.consent-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const modalId = link.dataset.modal;
+        if (modalId) {
+            openModal(modalId);
+        }
+    });
+});
+
+// STEP 4 완료 조건 확인
+function checkStep4Complete() {
+    const hasName = surveyData.name && surveyData.name.length > 0;
+    const hasDeposit = surveyData.deposit !== null;
+    const hasDepositAmount = surveyData.deposit === 'none' || 
+                             (surveyData.deposit === 'deposit' && surveyData.depositAmount) ||
+                             (surveyData.deposit === 'advance' && surveyData.advanceAmount);
+    const allConsentsChecked = surveyData.privacyConsent && 
+                               surveyData.thirdPartyConsent && 
+                               surveyData.marketingConsent;
+    
+    if (step4NextBtn) {
+        step4NextBtn.disabled = !(hasName && hasDeposit && hasDepositAmount && allConsentsChecked);
+    }
+}
+
+// 보증금 선택 시 완료 조건 확인은 이미 위에서 처리됨
 
 step4NextBtn?.addEventListener('click', async () => {
     // STEP 4에서 다음단계를 누르면 서버로 데이터 전송
@@ -142,9 +202,13 @@ step4NextBtn?.addEventListener('click', async () => {
                 productType: surveyData.productType,
                 vehicle: surveyData.vehicle,
                 phone: surveyData.phone,
+                name: surveyData.name,
                 deposit: surveyData.deposit,
                 depositAmount: surveyData.depositAmount || null,
                 advanceAmount: surveyData.advanceAmount || null,
+                privacyConsent: surveyData.privacyConsent,
+                thirdPartyConsent: surveyData.thirdPartyConsent,
+                marketingConsent: surveyData.marketingConsent,
             }),
         });
 
@@ -212,6 +276,10 @@ function resetSurvey() {
     surveyData.vehicle = null;
     surveyData.period = null;
     surveyData.deposit = null;
+    surveyData.name = null;
+    surveyData.privacyConsent = false;
+    surveyData.thirdPartyConsent = false;
+    surveyData.marketingConsent = false;
     surveyData.personalInfo = {};
     
     // 모든 선택 해제
@@ -231,11 +299,25 @@ function resetSurvey() {
     if (phoneInput) {
         phoneInput.value = '';
     }
+    if (nameInput) {
+        nameInput.value = '';
+    }
     if (depositAmountInput) {
         depositAmountInput.value = '';
     }
     if (advanceAmountInput) {
         advanceAmountInput.value = '';
+    }
+    
+    // 체크박스 초기화
+    if (privacyConsent) {
+        privacyConsent.checked = false;
+    }
+    if (thirdPartyConsent) {
+        thirdPartyConsent.checked = false;
+    }
+    if (marketingConsent) {
+        marketingConsent.checked = false;
     }
     
     // 다음 버튼 비활성화
@@ -247,55 +329,7 @@ function resetSurvey() {
     updateStepDisplay();
 }
 
-// 개인정보 처리방침 링크
-const privacyCheckbox = document.querySelector('input[name="privacy"]');
-const thirdPartyCheckbox = document.querySelector('input[name="third-party"]');
-const marketingCheckbox = document.querySelector('input[name="marketing"]');
-
-if (privacyCheckbox) {
-    privacyCheckbox.addEventListener('click', (e) => {
-        if (!privacyCheckbox.checked) {
-            e.preventDefault();
-            openModal('privacyModal');
-            const modal = document.getElementById('privacyModal');
-            const modalClose = modal.querySelector('.modal-close');
-            const closeHandler = () => {
-                privacyCheckbox.checked = true;
-            };
-            modalClose.addEventListener('click', closeHandler, { once: true });
-        }
-    });
-}
-
-if (thirdPartyCheckbox) {
-    thirdPartyCheckbox.addEventListener('click', (e) => {
-        if (!thirdPartyCheckbox.checked) {
-            e.preventDefault();
-            openModal('thirdPartyModal');
-            const modal = document.getElementById('thirdPartyModal');
-            const modalClose = modal.querySelector('.modal-close');
-            const closeHandler = () => {
-                thirdPartyCheckbox.checked = true;
-            };
-            modalClose.addEventListener('click', closeHandler, { once: true });
-        }
-    });
-}
-
-if (marketingCheckbox) {
-    marketingCheckbox.addEventListener('click', (e) => {
-        if (!marketingCheckbox.checked) {
-            e.preventDefault();
-            openModal('marketingModal');
-            const modal = document.getElementById('marketingModal');
-            const modalClose = modal.querySelector('.modal-close');
-            const closeHandler = () => {
-                marketingCheckbox.checked = true;
-            };
-            modalClose.addEventListener('click', closeHandler, { once: true });
-        }
-    });
-}
+// 개인정보 동의 링크는 이미 위에서 처리됨
 
 // 모달 열기/닫기
 function openModal(modalId) {

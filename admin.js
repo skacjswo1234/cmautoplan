@@ -230,6 +230,7 @@ function displayInquiries(data) {
         return `
             <tr>
                 <td>${item.id}</td>
+                <td>${item.name || '-'}</td>
                 <td>${productType(item.product_type)}</td>
                 <td>${item.vehicle}</td>
                 <td>${item.phone}</td>
@@ -252,6 +253,10 @@ function displayInquiries(data) {
                     <div class="inquiry-card-header">
                         <span class="inquiry-card-id">#${item.id}</span>
                         <span class="status-badge ${item.status}">${statusText(item.status)}</span>
+                    </div>
+                    <div class="inquiry-card-field">
+                        <span class="inquiry-card-label">성함</span>
+                        <span class="inquiry-card-value">${item.name || '-'}</span>
                     </div>
                     <div class="inquiry-card-field">
                         <span class="inquiry-card-label">상품유형</span>

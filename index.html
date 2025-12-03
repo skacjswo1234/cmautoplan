@@ -84,7 +84,7 @@
                 <button class="next-step-btn" id="step3NextBtn" disabled>다음단계</button>
             </div>
 
-            <!-- STEP 4: 보증금 유형 -->
+            <!-- STEP 4: 보증금 유형, 성함, 개인정보 동의 -->
             <div class="survey-step" data-step="4">
                 <div class="step-header">신차 장기렌트 맛집 CMAUTOPLAN</div>
                 <h2 class="question">Q 보증금 유형을 선택해주세요.</h2>
@@ -105,6 +105,38 @@
                         </div>
                     </div>
                 </div>
+                
+                <h2 class="question" style="margin-top: 40px;">Q 성함을 입력 해주세요</h2>
+                <div class="input-group">
+                    <label class="input-label">성함</label>
+                    <input type="text" class="name-input" id="nameInput" placeholder="성함을 입력해주세요.">
+                </div>
+
+                <!-- 개인정보 동의 섹션 -->
+                <div class="privacy-consent-section">
+                    <div class="privacy-consent-item">
+                        <input type="checkbox" id="privacyConsent" name="privacy">
+                        <label for="privacyConsent">
+                            <span class="consent-text">개인정보 수집, 이용, 제공 동의</span>
+                            <a href="#" class="consent-link" data-modal="privacyModal">(확인)</a>
+                        </label>
+                    </div>
+                    <div class="privacy-consent-item">
+                        <input type="checkbox" id="thirdPartyConsent" name="thirdParty">
+                        <label for="thirdPartyConsent">
+                            <span class="consent-text">개인정보 제3자 제공 동의</span>
+                            <a href="#" class="consent-link" data-modal="thirdPartyModal">(확인)</a>
+                        </label>
+                    </div>
+                    <div class="privacy-consent-item">
+                        <input type="checkbox" id="marketingConsent" name="marketing">
+                        <label for="marketingConsent">
+                            <span class="consent-text">마케팅 활용 및 광고성 정보수신 동의</span>
+                            <a href="#" class="consent-link" data-modal="marketingModal">(확인)</a>
+                        </label>
+                    </div>
+                </div>
+
                 <button class="next-step-btn" id="step4NextBtn" disabled>다음단계</button>
             </div>
 
