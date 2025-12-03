@@ -3,12 +3,12 @@
 
 CREATE TABLE IF NOT EXISTS estimates (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    product_type TEXT NOT NULL,  -- 'rent' (장기렌트) 또는 'lease' (리스)
-    vehicle TEXT NOT NULL,       -- 차량명
-    phone TEXT NOT NULL,          -- 핸드폰 번호
-    deposit_type TEXT NOT NULL,  -- 'none' (무보증), 'deposit' (보증금), 'advance' (선수금)
-    deposit_amount TEXT,         -- 보증금/선수금 금액 (deposit_type이 none이면 NULL)
-    status TEXT DEFAULT 'pending', -- 'pending', 'contacted', 'completed', 'cancelled'
+    product_type TEXT NOT NULL,  
+    vehicle TEXT NOT NULL,       
+    phone TEXT NOT NULL,          
+    deposit_type TEXT NOT NULL,  
+    deposit_amount TEXT,         
+    status TEXT DEFAULT 'pending', 
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -17,4 +17,16 @@ CREATE TABLE IF NOT EXISTS estimates (
 CREATE INDEX IF NOT EXISTS idx_estimates_created_at ON estimates(created_at);
 CREATE INDEX IF NOT EXISTS idx_estimates_status ON estimates(status);
 CREATE INDEX IF NOT EXISTS idx_estimates_phone ON estimates(phone);
+
+-- 관리자 테이블
+CREATE TABLE IF NOT EXISTS admin (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    password TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 초기 관리자 비밀번호 설정 (비밀번호: admin123)
+-- 실제 사용 시 해시된 비밀번호로 변경 필요
+-- INSERT INTO admin (password) VALUES ('admin123');
 
