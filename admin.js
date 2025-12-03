@@ -156,7 +156,7 @@ document.getElementById('refreshBtn').addEventListener('click', () => {
 // 문의 목록 로드
 async function loadInquiries() {
     const tbody = document.getElementById('inquiriesTableBody');
-    tbody.innerHTML = '<tr><td colspan="9" class="loading">로딩 중...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="10" class="loading">로딩 중...</td></tr>';
 
     try {
         let url = `/api/estimates?limit=20&offset=${(currentPage - 1) * 20}`;
@@ -173,7 +173,7 @@ async function loadInquiries() {
         if (result.success) {
             displayInquiries(result.data);
         } else {
-            tbody.innerHTML = '<tr><td colspan="9" class="loading">데이터를 불러오는데 실패했습니다.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="10" class="loading">데이터를 불러오는데 실패했습니다.</td></tr>';
         }
     } catch (error) {
         console.error('Error loading inquiries:', error);
@@ -188,7 +188,7 @@ function displayInquiries(data) {
     const isMobile = window.innerWidth <= 768;
     
     if (data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="9" class="loading">데이터가 없습니다.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" class="loading">데이터가 없습니다.</td></tr>';
         if (mobileCardList) {
             mobileCardList.innerHTML = '<div class="loading">데이터가 없습니다.</div>';
         }
