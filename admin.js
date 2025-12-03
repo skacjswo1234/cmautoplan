@@ -76,17 +76,21 @@ const adminSidebar = document.getElementById('adminSidebar');
 const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
 
 const openMobileMenu = () => {
-    if (adminSidebar && sidebarOverlay) {
+    if (adminSidebar && sidebarOverlay && mobileMenuBtn) {
         adminSidebar.classList.add('open');
         sidebarOverlay.classList.add('active');
+        mobileMenuBtn.style.display = 'none';
         document.body.style.overflow = 'hidden';
     }
 };
 
 const closeMobileMenu = () => {
-    if (adminSidebar && sidebarOverlay) {
+    if (adminSidebar && sidebarOverlay && mobileMenuBtn) {
         adminSidebar.classList.remove('open');
         sidebarOverlay.classList.remove('active');
+        if (window.innerWidth <= 768) {
+            mobileMenuBtn.style.display = 'flex';
+        }
         document.body.style.overflow = '';
     }
 };

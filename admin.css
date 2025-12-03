@@ -197,7 +197,7 @@ body {
     height: 100vh;
     overflow-y: auto;
     border-right: 1px solid #2d2d2d;
-    z-index: 999;
+    z-index: 1002;
     transition: transform 0.3s ease-in-out;
 }
 
@@ -219,7 +219,7 @@ body {
     align-items: center;
     justify-content: center;
     transition: all 0.3s;
-    z-index: 1001;
+    z-index: 1003;
 }
 
 .sidebar-close-btn:hover {
@@ -725,9 +725,12 @@ body {
         display: flex !important;
         top: 15px;
         right: 15px;
-        width: 44px;
-        height: 44px;
+        width: 48px;
+        height: 48px;
         font-size: 32px;
+        background: rgba(255, 255, 255, 0.2) !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }
 
     .admin-sidebar {
@@ -742,6 +745,11 @@ body {
 
     .admin-sidebar.open {
         transform: translateX(0);
+    }
+
+    .admin-sidebar.open ~ .mobile-menu-btn,
+    .admin-sidebar.open + * .mobile-menu-btn {
+        display: none !important;
     }
 
     .admin-content {
