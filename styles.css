@@ -142,14 +142,14 @@ body {
 
 .rent-image {
     background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-                url('images/car/rent.png');
+                url('images/car/webp/rent.webp');
     background-size: cover;
     background-position: center;
 }
 
 .lease-image {
     background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-                url('images/car/ris.png');
+                url('images/car/webp/ris.webp');
     background-size: cover;
     background-position: center;
 }
