@@ -28,8 +28,17 @@
 
     <!-- 관리자 대시보드 -->
     <div id="adminDashboard" class="admin-dashboard" style="display: none;">
-        <div class="admin-sidebar">
+        <!-- 모바일 메뉴 버튼 -->
+        <button id="mobileMenuBtn" class="mobile-menu-btn">
+            <span>☰</span>
+        </button>
+        
+        <!-- 사이드바 오버레이 (모바일용) -->
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+        
+        <div class="admin-sidebar" id="adminSidebar">
             <div class="sidebar-header">
+                <button class="sidebar-close-btn" id="sidebarCloseBtn">×</button>
                 <img src="images/cmautoplan-logo.png" alt="CMAUTOPLAN" class="sidebar-logo">
                 <h3>관리자</h3>
             </div>
@@ -74,7 +83,8 @@
                     <button class="tab-btn" data-tab="cancelled">취소</button>
                 </div>
 
-                <div class="table-container">
+                <!-- 데스크톱 테이블 -->
+                <div class="table-container desktop-table">
                     <table class="data-table">
                         <thead>
                             <tr>
@@ -95,6 +105,11 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- 모바일 카드 리스트 -->
+                <div class="mobile-card-list" id="mobileCardList">
+                    <div class="loading">로딩 중...</div>
                 </div>
 
                 <div class="pagination">

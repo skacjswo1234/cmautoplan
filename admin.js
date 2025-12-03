@@ -69,6 +69,28 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
     }
 });
 
+// 모바일 메뉴 토글
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+const adminSidebar = document.getElementById('adminSidebar');
+const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+
+const openMobileMenu = () => {
+    adminSidebar.classList.add('open');
+    sidebarOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
+
+const closeMobileMenu = () => {
+    adminSidebar.classList.remove('open');
+    sidebarOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+};
+
+mobileMenuBtn?.addEventListener('click', openMobileMenu);
+sidebarCloseBtn?.addEventListener('click', closeMobileMenu);
+sidebarOverlay?.addEventListener('click', closeMobileMenu);
+
 // 네비게이션
 document.querySelectorAll('.nav-item[data-page]').forEach(item => {
     item.addEventListener('click', (e) => {
@@ -82,6 +104,11 @@ document.querySelectorAll('.nav-item[data-page]').forEach(item => {
         // 페이지 전환
         document.querySelectorAll('.content-page').forEach(p => p.classList.remove('active'));
         document.getElementById(`${page}Page`).classList.add('active');
+
+        // 모바일에서 메뉴 닫기
+        if (window.innerWidth <= 768) {
+            closeMobileMenu();
+        }
     });
 });
 
@@ -139,51 +166,108 @@ async function loadInquiries() {
 // 문의 목록 표시
 function displayInquiries(data) {
     const tbody = document.getElementById('inquiriesTableBody');
+    const mobileCardList = document.getElementById('mobileCardList');
+    const isMobile = window.innerWidth <= 768;
     
     if (data.length === 0) {
         tbody.innerHTML = '<tr><td colspan="9" class="loading">데이터가 없습니다.</td></tr>';
+        if (mobileCardList) {
+            mobileCardList.innerHTML = '<div class="loading">데이터가 없습니다.</div>';
+        }
         return;
     }
 
-    tbody.innerHTML = data.map(item => {
-        const productType = item.product_type === 'rent' ? '장기렌트' : '리스';
-        const depositType = {
+    const productType = (type) => type === 'rent' ? '장기렌트' : '리스';
+    const depositType = (type) => {
+        const types = {
             'none': '무보증',
             'deposit': '보증금',
             'advance': '선수금'
-        }[item.deposit_type] || item.deposit_type;
-        
-        const statusText = {
+        };
+        return types[type] || type;
+    };
+    
+    const statusText = (status) => {
+        const statuses = {
             'pending': '대기중',
             'contacted': '연락완료',
             'completed': '완료',
             'cancelled': '취소'
-        }[item.status] || item.status;
+        };
+        return statuses[status] || status;
+    };
 
-        const formattedDate = new Date(item.created_at).toLocaleString('ko-KR', {
+    const formattedDate = (dateString) => {
+        return new Date(dateString).toLocaleString('ko-KR', {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit',
             hour: '2-digit',
             minute: '2-digit'
         });
+    };
 
+    // 데스크톱 테이블
+    tbody.innerHTML = data.map(item => {
         return `
             <tr>
                 <td>${item.id}</td>
-                <td>${productType}</td>
+                <td>${productType(item.product_type)}</td>
                 <td>${item.vehicle}</td>
                 <td>${item.phone}</td>
-                <td>${depositType}</td>
+                <td>${depositType(item.deposit_type)}</td>
                 <td>${item.deposit_amount || '-'}</td>
-                <td><span class="status-badge ${item.status}">${statusText}</span></td>
-                <td>${formattedDate}</td>
+                <td><span class="status-badge ${item.status}">${statusText(item.status)}</span></td>
+                <td>${formattedDate(item.created_at)}</td>
                 <td>
                     <button class="btn-action" onclick="openStatusModal(${item.id}, '${item.status}')">상태변경</button>
                 </td>
             </tr>
         `;
     }).join('');
+
+    // 모바일 카드 리스트
+    if (mobileCardList) {
+        mobileCardList.innerHTML = data.map(item => {
+            return `
+                <div class="inquiry-card">
+                    <div class="inquiry-card-header">
+                        <span class="inquiry-card-id">#${item.id}</span>
+                        <span class="status-badge ${item.status}">${statusText(item.status)}</span>
+                    </div>
+                    <div class="inquiry-card-field">
+                        <span class="inquiry-card-label">상품유형</span>
+                        <span class="inquiry-card-value">${productType(item.product_type)}</span>
+                    </div>
+                    <div class="inquiry-card-field">
+                        <span class="inquiry-card-label">차량명</span>
+                        <span class="inquiry-card-value">${item.vehicle}</span>
+                    </div>
+                    <div class="inquiry-card-field">
+                        <span class="inquiry-card-label">연락처</span>
+                        <span class="inquiry-card-value">${item.phone}</span>
+                    </div>
+                    <div class="inquiry-card-field">
+                        <span class="inquiry-card-label">보증금유형</span>
+                        <span class="inquiry-card-value">${depositType(item.deposit_type)}</span>
+                    </div>
+                    ${item.deposit_amount ? `
+                    <div class="inquiry-card-field">
+                        <span class="inquiry-card-label">보증금금액</span>
+                        <span class="inquiry-card-value">${item.deposit_amount}</span>
+                    </div>
+                    ` : ''}
+                    <div class="inquiry-card-field">
+                        <span class="inquiry-card-label">신청일시</span>
+                        <span class="inquiry-card-value">${formattedDate(item.created_at)}</span>
+                    </div>
+                    <div class="inquiry-card-actions">
+                        <button class="btn-action" onclick="openStatusModal(${item.id}, '${item.status}')">상태변경</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
 }
 
 // 상태 변경 모달 열기
@@ -289,6 +373,13 @@ document.getElementById('passwordForm').addEventListener('submit', async (e) => 
 document.getElementById('statusModal').addEventListener('click', (e) => {
     if (e.target.id === 'statusModal') {
         e.target.classList.remove('active');
+    }
+});
+
+// 윈도우 리사이즈 시 모바일 메뉴 닫기
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+        closeMobileMenu();
     }
 });
 
