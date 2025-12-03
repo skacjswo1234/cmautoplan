@@ -151,7 +151,6 @@ body {
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     transition: all 0.3s;
-    display: flex;
     align-items: center;
     justify-content: center;
 }
@@ -217,7 +216,6 @@ body {
     font-weight: bold;
     cursor: pointer;
     line-height: 1;
-    display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s;
