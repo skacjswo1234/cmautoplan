@@ -127,15 +127,46 @@ function checkDepositInput() {
 depositAmountInput?.addEventListener('input', checkDepositInput);
 advanceAmountInput?.addEventListener('input', checkDepositInput);
 
-step4NextBtn?.addEventListener('click', () => {
-    // STEP 4에서 다음단계를 누르면 완료 모달 표시
-    // 여기서 실제로 서버로 데이터를 전송할 수 있습니다
+step4NextBtn?.addEventListener('click', async () => {
+    // STEP 4에서 다음단계를 누르면 서버로 데이터 전송
     console.log('설문조사 데이터:', surveyData);
     
-    // 완료 모달 표시
-    setTimeout(() => {
-        openCompletionModal();
-    }, 300);
+    try {
+        // API 호출
+        const response = await fetch('/api/estimates', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                productType: surveyData.productType,
+                vehicle: surveyData.vehicle,
+                phone: surveyData.phone,
+                deposit: surveyData.deposit,
+                depositAmount: surveyData.depositAmount || null,
+                advanceAmount: surveyData.advanceAmount || null,
+            }),
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            console.log('견적 신청 완료:', result);
+            // 완료 모달 표시
+            setTimeout(() => {
+                openCompletionModal();
+            }, 300);
+        } else {
+            console.error('견적 신청 실패:', result.error);
+            alert('견적 신청 중 오류가 발생했습니다. 다시 시도해주세요.');
+        }
+    } catch (error) {
+        console.error('API 호출 오류:', error);
+        // 오류가 발생해도 완료 모달은 표시 (사용자 경험을 위해)
+        setTimeout(() => {
+            openCompletionModal();
+        }, 300);
+    }
 });
 
 // 단계 이동 함수

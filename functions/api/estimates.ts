@@ -1,0 +1,167 @@
+// Cloudflare Pages Functions API
+// POST /api/estimates - 견적 신청 생성
+// GET /api/estimates - 견적 신청 목록 조회 (관리자용)
+
+// Cloudflare Pages Functions 타입 정의
+interface Env {
+  'cmautoplan-db': D1Database;
+}
+
+export async function onRequestPost(context: { env: Env; request: Request }): Promise<Response> {
+  const { env, request } = context;
+  
+  try {
+    // CORS 헤더 설정
+    const corsHeaders = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    };
+
+    // OPTIONS 요청 처리
+    if (request.method === 'OPTIONS') {
+      return new Response(null, { headers: corsHeaders });
+    }
+
+    // 요청 본문 파싱
+    const body = await request.json();
+    
+    // 필수 필드 검증
+    const { productType, vehicle, phone, deposit, depositAmount, advanceAmount } = body;
+    
+    if (!productType || !vehicle || !phone || !deposit) {
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: '필수 필드가 누락되었습니다.' 
+        }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
+    // 핸드폰 번호 유효성 검사 (10-11자리 숫자)
+    const phoneRegex = /^[0-9]{10,11}$/;
+    if (!phoneRegex.test(phone.replace(/[^0-9]/g, ''))) {
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          error: '올바른 핸드폰 번호를 입력해주세요.' 
+        }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
+    // 보증금/선수금 금액 설정
+    let finalDepositAmount = null;
+    if (deposit === 'deposit' && depositAmount) {
+      finalDepositAmount = depositAmount;
+    } else if (deposit === 'advance' && advanceAmount) {
+      finalDepositAmount = advanceAmount;
+    }
+
+    // D1 데이터베이스에 삽입
+    const db = env['cmautoplan-db'];
+    
+    const result = await db.prepare(
+      `INSERT INTO estimates (product_type, vehicle, phone, deposit_type, deposit_amount, status)
+       VALUES (?, ?, ?, ?, ?, 'pending')`
+    ).bind(
+      productType,
+      vehicle,
+      phone.replace(/[^0-9]/g, ''), // 숫자만 저장
+      deposit,
+      finalDepositAmount
+    ).run();
+
+    return new Response(
+      JSON.stringify({ 
+        success: true, 
+        id: result.meta.last_row_id,
+        message: '견적 신청이 완료되었습니다.' 
+      }),
+      { 
+        status: 201, 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      }
+    );
+
+  } catch (error) {
+    console.error('Error creating estimate:', error);
+    return new Response(
+      JSON.stringify({ 
+        success: false, 
+        error: '서버 오류가 발생했습니다.' 
+      }),
+      { 
+        status: 500, 
+        headers: { 
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json' 
+        } 
+      }
+    );
+  }
+}
+
+export async function onRequestGet(context: { env: Env; request: Request }): Promise<Response> {
+  const { env, request } = context;
+  
+  try {
+    const db = env['cmautoplan-db'];
+    const url = new URL(request.url);
+    const limit = parseInt(url.searchParams.get('limit') || '100');
+    const offset = parseInt(url.searchParams.get('offset') || '0');
+    const status = url.searchParams.get('status');
+
+    let query = 'SELECT * FROM estimates';
+    const params: any[] = [];
+
+    if (status) {
+      query += ' WHERE status = ?';
+      params.push(status);
+    }
+
+    query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
+    params.push(limit, offset);
+
+    const stmt = db.prepare(query);
+    const result = await stmt.bind(...params).all();
+
+    return new Response(
+      JSON.stringify({ 
+        success: true, 
+        data: result.results,
+        count: result.results.length 
+      }),
+      { 
+        headers: { 
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json' 
+        } 
+      }
+    );
+
+  } catch (error) {
+    console.error('Error fetching estimates:', error);
+    return new Response(
+      JSON.stringify({ 
+        success: false, 
+        error: '서버 오류가 발생했습니다.' 
+      }),
+      { 
+        status: 500, 
+        headers: { 
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json' 
+        } 
+      }
+    );
+  }
+}
+
