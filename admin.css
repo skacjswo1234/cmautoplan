@@ -207,25 +207,28 @@ body {
     position: absolute;
     top: 20px;
     right: 20px;
-    width: 36px;
-    height: 36px;
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     color: #e0e0e0;
-    font-size: 24px;
+    font-size: 28px;
+    font-weight: bold;
     cursor: pointer;
     line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s;
+    z-index: 1001;
 }
 
 .sidebar-close-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
     color: #fff;
-    transform: rotate(90deg);
+    transform: rotate(90deg) scale(1.1);
 }
 
 .sidebar-header {
@@ -707,6 +710,11 @@ body {
 
     .sidebar-close-btn {
         display: flex !important;
+        top: 15px;
+        right: 15px;
+        width: 44px;
+        height: 44px;
+        font-size: 32px;
     }
 
     .admin-sidebar {
@@ -758,43 +766,7 @@ body {
     }
 
     .tabs {
-        display: flex;
-        flex-direction: column;
-        gap: 0;
-        margin-bottom: 0;
-        border-bottom: none;
-        background: #1a1a1a;
-        position: sticky;
-        top: 120px;
-        z-index: 9;
-        border-top: 1px solid #2d2d2d;
-    }
-
-    .tab-btn {
-        padding: 16px 20px;
-        font-size: 15px;
-        text-align: left;
-        border-bottom: 1px solid #2d2d2d;
-        border-radius: 0;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .tab-btn:last-child {
-        border-bottom: none;
-    }
-
-    .tab-btn.active {
-        background: #2d2d2d;
-        border-left: 4px solid #667eea;
-        border-bottom-color: #2d2d2d;
-        color: #667eea;
-    }
-
-    .tab-btn:hover {
-        background: #252525;
+        display: none !important;
     }
 
     .desktop-table {
