@@ -103,3 +103,50 @@ export async function onRequestPatch(
   }
 }
 
+export async function onRequestDelete(
+  context: { env: Env; request: Request; params: { id: string } }
+): Promise<Response> {
+  const { env, params } = context;
+  
+  try {
+    const db = env['cmautoplan-db'];
+    const id = parseInt(params.id);
+
+    if (isNaN(id)) {
+      return new Response(
+        JSON.stringify({ success: false, error: '잘못된 ID입니다.' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // 먼저 존재하는지 확인
+    const checkResult = await db.prepare(
+      'SELECT id FROM estimates WHERE id = ?'
+    ).bind(id).first();
+
+    if (!checkResult) {
+      return new Response(
+        JSON.stringify({ success: false, error: '견적 신청을 찾을 수 없습니다.' }),
+        { status: 404, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // 삭제 실행
+    await db.prepare(
+      'DELETE FROM estimates WHERE id = ?'
+    ).bind(id).run();
+
+    return new Response(
+      JSON.stringify({ success: true, message: '삭제되었습니다.' }),
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+  } catch (error) {
+    console.error('Error deleting estimate:', error);
+    return new Response(
+      JSON.stringify({ success: false, error: '서버 오류가 발생했습니다.' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+}
+

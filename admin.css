@@ -452,13 +452,19 @@ body {
 }
 
 .inquiry-card-actions {
-    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
     padding-top: 15px;
     border-top: 1px solid #404040;
 }
 
 .inquiry-card-actions .btn-action {
-    width: 100%;
+    flex: 1;
+}
+
+.inquiry-card-actions .btn-delete {
+    margin-left: 0;
 }
 
 .data-table {
@@ -537,6 +543,15 @@ body {
 
 .btn-action:hover {
     background: #5568d3;
+}
+
+.btn-delete {
+    background: #e74c3c;
+    margin-left: 8px;
+}
+
+.btn-delete:hover {
+    background: #c0392b;
 }
 
 /* 페이지네이션 */

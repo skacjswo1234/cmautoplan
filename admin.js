@@ -240,6 +240,7 @@ function displayInquiries(data) {
                 <td>${formattedDate(item.created_at)}</td>
                 <td>
                     <button class="btn-action" onclick="openStatusModal(${item.id}, '${item.status}')">상태변경</button>
+                    <button class="btn-action btn-delete" onclick="deleteInquiry(${item.id})">삭제</button>
                 </td>
             </tr>
         `;
@@ -286,6 +287,7 @@ function displayInquiries(data) {
                     </div>
                     <div class="inquiry-card-actions">
                         <button class="btn-action" onclick="openStatusModal(${item.id}, '${item.status}')">상태변경</button>
+                        <button class="btn-action btn-delete" onclick="deleteInquiry(${item.id})">삭제</button>
                     </div>
                 </div>
             `;
@@ -398,6 +400,34 @@ document.getElementById('statusModal').addEventListener('click', (e) => {
         e.target.classList.remove('active');
     }
 });
+
+// 문의 삭제 함수
+async function deleteInquiry(id) {
+    if (!confirm('정말로 이 문의를 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.')) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/estimates/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            alert('문의가 삭제되었습니다.');
+            loadInquiries();
+        } else {
+            alert(result.error || '삭제에 실패했습니다.');
+        }
+    } catch (error) {
+        console.error('Error deleting inquiry:', error);
+        alert('오류가 발생했습니다.');
+    }
+}
 
 // 윈도우 리사이즈 시 모바일 메뉴 닫기
 window.addEventListener('resize', () => {
