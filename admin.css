@@ -6,8 +6,8 @@
 
 body {
     font-family: 'Pretendard', sans-serif;
-    background: #f5f5f5;
-    color: #333;
+    background: #1a1a1a;
+    color: #e0e0e0;
 }
 
 /* 로그인 화면 */
@@ -20,12 +20,13 @@ body {
 }
 
 .login-container {
-    background: #fff;
+    background: #2d2d2d;
     padding: 60px 50px;
     border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     width: 100%;
     max-width: 450px;
+    border: 1px solid #404040;
 }
 
 .login-logo {
@@ -43,7 +44,7 @@ body {
     font-size: 28px;
     font-weight: 700;
     margin-bottom: 40px;
-    color: #333;
+    color: #e0e0e0;
 }
 
 .login-form {
@@ -61,15 +62,17 @@ body {
 .form-group label {
     font-size: 14px;
     font-weight: 600;
-    color: #555;
+    color: #b0b0b0;
 }
 
 .form-group input,
 .form-group select {
     padding: 12px 16px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid #404040;
     border-radius: 8px;
     font-size: 16px;
+    background: #1a1a1a;
+    color: #e0e0e0;
     transition: border-color 0.3s;
 }
 
@@ -77,6 +80,11 @@ body {
 .form-group select:focus {
     outline: none;
     border-color: #667eea;
+    background: #252525;
+}
+
+.form-group input::placeholder {
+    color: #666;
 }
 
 .login-btn,
@@ -129,19 +137,20 @@ body {
 /* 사이드바 */
 .admin-sidebar {
     width: 260px;
-    background: #2c3e50;
+    background: #1a1a1a;
     color: #fff;
     display: flex;
     flex-direction: column;
     position: fixed;
     height: 100vh;
     overflow-y: auto;
+    border-right: 1px solid #2d2d2d;
 }
 
 .sidebar-header {
     padding: 30px 20px;
     text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid #2d2d2d;
 }
 
 .sidebar-logo {
@@ -164,19 +173,19 @@ body {
     align-items: center;
     gap: 12px;
     padding: 15px 25px;
-    color: #bdc3c7;
+    color: #a0a0a0;
     text-decoration: none;
     transition: all 0.3s;
     cursor: pointer;
 }
 
 .nav-item:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: #2d2d2d;
     color: #fff;
 }
 
 .nav-item.active {
-    background: rgba(102, 126, 234, 0.2);
+    background: rgba(102, 126, 234, 0.3);
     color: #fff;
     border-left: 4px solid #667eea;
 }
@@ -215,7 +224,7 @@ body {
 .page-header h1 {
     font-size: 28px;
     font-weight: 700;
-    color: #2c3e50;
+    color: #e0e0e0;
 }
 
 .page-actions {
@@ -226,10 +235,17 @@ body {
 
 .filter-select {
     padding: 10px 15px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid #404040;
     border-radius: 8px;
     font-size: 14px;
     cursor: pointer;
+    background: #2d2d2d;
+    color: #e0e0e0;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #667eea;
 }
 
 .refresh-btn {
@@ -253,7 +269,7 @@ body {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
-    border-bottom: 2px solid #e0e0e0;
+    border-bottom: 2px solid #2d2d2d;
 }
 
 .tab-btn {
@@ -263,13 +279,13 @@ body {
     border-bottom: 3px solid transparent;
     font-size: 15px;
     font-weight: 600;
-    color: #7f8c8d;
+    color: #888;
     cursor: pointer;
     transition: all 0.3s;
 }
 
 .tab-btn:hover {
-    color: #2c3e50;
+    color: #e0e0e0;
 }
 
 .tab-btn.active {
@@ -279,10 +295,11 @@ body {
 
 /* 테이블 */
 .table-container {
-    background: #fff;
+    background: #2d2d2d;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid #404040;
 }
 
 .data-table {
@@ -291,7 +308,7 @@ body {
 }
 
 .data-table thead {
-    background: #f8f9fa;
+    background: #252525;
 }
 
 .data-table th {
@@ -299,24 +316,24 @@ body {
     text-align: left;
     font-size: 14px;
     font-weight: 600;
-    color: #555;
-    border-bottom: 2px solid #e0e0e0;
+    color: #b0b0b0;
+    border-bottom: 2px solid #404040;
 }
 
 .data-table td {
     padding: 15px;
     font-size: 14px;
-    color: #333;
-    border-bottom: 1px solid #f0f0f0;
+    color: #e0e0e0;
+    border-bottom: 1px solid #404040;
 }
 
 .data-table tbody tr:hover {
-    background: #f8f9fa;
+    background: #353535;
 }
 
 .data-table tbody tr.loading {
     text-align: center;
-    color: #999;
+    color: #888;
 }
 
 .status-badge {
@@ -328,23 +345,23 @@ body {
 }
 
 .status-badge.pending {
-    background: #fff3cd;
-    color: #856404;
+    background: #3d2f1f;
+    color: #ffc107;
 }
 
 .status-badge.contacted {
-    background: #d1ecf1;
-    color: #0c5460;
+    background: #1a2a3a;
+    color: #17a2b8;
 }
 
 .status-badge.completed {
-    background: #d4edda;
-    color: #155724;
+    background: #1a3a2a;
+    color: #28a745;
 }
 
 .status-badge.cancelled {
-    background: #f8d7da;
-    color: #721c24;
+    background: #3a1a1a;
+    color: #dc3545;
 }
 
 .btn-action {
@@ -374,18 +391,18 @@ body {
 
 .page-btn {
     padding: 10px 20px;
-    background: #fff;
-    border: 2px solid #e0e0e0;
+    background: #2d2d2d;
+    border: 2px solid #404040;
     border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
-    color: #555;
+    color: #e0e0e0;
     cursor: pointer;
     transition: all 0.3s;
 }
 
 .page-btn:hover:not(:disabled) {
-    background: #f8f9fa;
+    background: #353535;
     border-color: #667eea;
     color: #667eea;
 }
@@ -397,7 +414,7 @@ body {
 
 .page-info {
     font-size: 14px;
-    color: #555;
+    color: #b0b0b0;
     font-weight: 600;
 }
 
@@ -405,10 +422,11 @@ body {
 .password-form-container {
     max-width: 600px;
     margin: 0 auto;
-    background: #fff;
+    background: #2d2d2d;
     padding: 40px;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid #404040;
 }
 
 .password-form {
@@ -419,15 +437,18 @@ body {
 
 .form-select {
     padding: 12px 16px;
-    border: 2px solid #e0e0e0;
+    border: 2px solid #404040;
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
+    background: #1a1a1a;
+    color: #e0e0e0;
 }
 
 .form-select:focus {
     outline: none;
     border-color: #667eea;
+    background: #252525;
 }
 
 /* 모달 */
@@ -438,7 +459,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7);
     z-index: 1000;
     align-items: center;
     justify-content: center;
@@ -449,12 +470,13 @@ body {
 }
 
 .modal-content {
-    background: #fff;
+    background: #2d2d2d;
     padding: 30px;
     border-radius: 12px;
     max-width: 500px;
     width: 90%;
     position: relative;
+    border: 1px solid #404040;
 }
 
 .modal-close {
@@ -465,14 +487,19 @@ body {
     border: none;
     font-size: 28px;
     cursor: pointer;
-    color: #999;
+    color: #888;
     line-height: 1;
+    transition: color 0.3s;
+}
+
+.modal-close:hover {
+    color: #e0e0e0;
 }
 
 .modal-content h2 {
     margin-bottom: 20px;
     font-size: 24px;
-    color: #2c3e50;
+    color: #e0e0e0;
 }
 
 .modal-actions {
@@ -484,8 +511,8 @@ body {
 
 .btn-cancel {
     padding: 10px 20px;
-    background: #e0e0e0;
-    color: #555;
+    background: #404040;
+    color: #e0e0e0;
     border: none;
     border-radius: 8px;
     font-size: 14px;
@@ -495,7 +522,7 @@ body {
 }
 
 .btn-cancel:hover {
-    background: #d0d0d0;
+    background: #505050;
 }
 
 .btn-submit {
