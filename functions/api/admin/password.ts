@@ -32,16 +32,6 @@ export async function onRequestPost(context: { env: Env; request: Request }): Pr
       );
     }
 
-    if (newPassword.length < 6) {
-      return new Response(
-        JSON.stringify({ success: false, error: '새 비밀번호는 최소 6자 이상이어야 합니다.' }),
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      );
-    }
-
     const db = env['cmautoplan-db'];
     
     // 현재 비밀번호 확인

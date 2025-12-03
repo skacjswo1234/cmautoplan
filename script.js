@@ -152,6 +152,12 @@ step4NextBtn?.addEventListener('click', async () => {
         
         if (result.success) {
             console.log('견적 신청 완료:', result);
+            
+            // Danggeun Market Code - 서비스 신청 트래킹
+            if (window.karrotPixel) {
+                window.karrotPixel.track('SubmitApplication');
+            }
+            
             // 완료 모달 표시
             setTimeout(() => {
                 openCompletionModal();
