@@ -76,20 +76,38 @@ const adminSidebar = document.getElementById('adminSidebar');
 const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
 
 const openMobileMenu = () => {
-    adminSidebar.classList.add('open');
-    sidebarOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    if (adminSidebar && sidebarOverlay) {
+        adminSidebar.classList.add('open');
+        sidebarOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 };
 
 const closeMobileMenu = () => {
-    adminSidebar.classList.remove('open');
-    sidebarOverlay.classList.remove('active');
-    document.body.style.overflow = '';
+    if (adminSidebar && sidebarOverlay) {
+        adminSidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 };
 
-mobileMenuBtn?.addEventListener('click', openMobileMenu);
-sidebarCloseBtn?.addEventListener('click', closeMobileMenu);
-sidebarOverlay?.addEventListener('click', closeMobileMenu);
+if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openMobileMenu();
+    });
+}
+
+if (sidebarCloseBtn) {
+    sidebarCloseBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeMobileMenu();
+    });
+}
+
+if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', closeMobileMenu);
+}
 
 // 네비게이션
 document.querySelectorAll('.nav-item[data-page]').forEach(item => {
