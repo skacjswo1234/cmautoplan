@@ -128,10 +128,14 @@ depositAmountInput?.addEventListener('input', checkDepositInput);
 advanceAmountInput?.addEventListener('input', checkDepositInput);
 
 step4NextBtn?.addEventListener('click', () => {
-    // STEP 4에서 다음단계를 누르면 완료 화면으로 이동
+    // STEP 4에서 다음단계를 누르면 완료 모달 표시
     // 여기서 실제로 서버로 데이터를 전송할 수 있습니다
     console.log('설문조사 데이터:', surveyData);
-    goToNextStep();
+    
+    // 완료 모달 표시
+    setTimeout(() => {
+        openCompletionModal();
+    }, 300);
 });
 
 // 단계 이동 함수
@@ -270,11 +274,42 @@ function closeModal(modal) {
     document.body.style.overflow = '';
 }
 
+// 완료 모달 열기
+function openCompletionModal() {
+    const completionModal = document.getElementById('completionModal');
+    if (completionModal) {
+        completionModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// 완료 모달 닫기 및 첫 화면으로 복귀
+function closeCompletionModal() {
+    const completionModal = document.getElementById('completionModal');
+    if (completionModal) {
+        completionModal.classList.remove('active');
+        document.body.style.overflow = '';
+        
+        // 첫 번째 화면으로 복귀
+        resetSurvey();
+        
+        // 페이지 상단으로 스크롤
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
 const modalCloses = document.querySelectorAll('.modal-close');
 modalCloses.forEach(close => {
     close.addEventListener('click', () => {
         const modal = close.closest('.modal');
-        if (modal) closeModal(modal);
+        if (modal) {
+            // 완료 모달은 첫 화면으로 복귀
+            if (modal.id === 'completionModal') {
+                closeCompletionModal();
+            } else {
+                closeModal(modal);
+            }
+        }
     });
 });
 
@@ -282,10 +317,21 @@ const modals = document.querySelectorAll('.modal');
 modals.forEach(modal => {
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
-            closeModal(modal);
+            // 완료 모달은 배경 클릭 시 첫 화면으로 복귀
+            if (modal.id === 'completionModal') {
+                closeCompletionModal();
+            } else {
+                closeModal(modal);
+            }
         }
     });
 });
+
+// 완료 모달 확인 버튼
+const completionCloseBtn = document.getElementById('completionCloseBtn');
+if (completionCloseBtn) {
+    completionCloseBtn.addEventListener('click', closeCompletionModal);
+}
 
 // 초기화
 updateStepDisplay();

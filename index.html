@@ -100,17 +100,8 @@
                 <button class="next-step-btn" id="step4NextBtn" disabled>다음단계</button>
             </div>
 
-            <!-- STEP 5: 완료 화면 -->
-            <div class="survey-step" data-step="5">
-                <div class="completion-logo">
-                    <img src="images/cmautoplan-logo.png" alt="CMAUTOPLAN" class="completion-logo-img">
-                </div>
-                <div class="completion-message">
-                    CMAUTOPLAN 견적 신청이 완료되었습니다.
-                </div>
-                <div class="completion-submessage">
-                    신속하게 연락드리겠습니다.
-                </div>
+            <!-- STEP 5: 완료 화면 (숨김 처리, 모달로 대체) -->
+            <div class="survey-step" data-step="5" style="display: none;">
             </div>
         </div>
 
@@ -989,6 +980,25 @@
                 <p>▶ 광고성 정보 수신 동의를 거부할 권리가 있습니다. 동의를 거부하더라도 견적 상담에는 영향이 없습니다. 다만, 제공하지 않은 개인정보에 대해서는 홍보, 마케팅 및 이벤트 정보를 활용할 수 없어 따로 연락을 드릴 수 없습니다. 홍보, 마케팅 및 이벤트 안내를 원하실 경우 상담센터를 통해 언제든 철회 또는 재동의 하실 수 있습니다.</p>
                 <p>※ 14세 미만 미성년은 견적 상담을 하실 수 없습니다.</p>
             </div>
+        </div>
+    </div>
+
+    <!-- 견적 신청 완료 모달 -->
+    <div class="modal" id="completionModal">
+        <div class="modal-content completion-modal-content">
+            <button class="modal-close completion-modal-close">&times;</button>
+            <div class="completion-icon">✓</div>
+            <div class="completion-logo">
+                <img src="images/cmautoplan-logo.png" alt="CMAUTOPLAN" class="completion-logo-img">
+            </div>
+            <h2 class="completion-title">견적 신청이 완료되었습니다!</h2>
+            <div class="completion-message">
+                신속하게 연락드리겠습니다.
+            </div>
+            <div class="completion-submessage">
+                감사합니다.
+            </div>
+            <button class="completion-btn" id="completionCloseBtn">확인</button>
         </div>
     </div>
 
