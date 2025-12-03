@@ -12,7 +12,7 @@ const surveyData = {
 };
 
 let currentStep = 1;
-const totalSteps = 5;
+const totalSteps = 6;
 
 // STEP 1: 상품 유형 선택
 const optionCards = document.querySelectorAll('.option-card');
@@ -95,8 +95,8 @@ depositCards.forEach(card => {
         
         // 보증금 선택 후 완료 조건 확인
         if (card.dataset.deposit === 'none') {
-            // 무보증 선택 시 보증금 금액은 필요 없지만, 성함과 개인정보 동의는 필요
-            checkStep4Complete();
+            // 무보증 선택 시 바로 다음 단계로 진행 가능
+            step4NextBtn.disabled = false;
         } else {
             // 보증금 또는 선수금 선택 시 입력값 확인
             checkDepositInput();
@@ -124,38 +124,43 @@ function checkDepositInput() {
         }
     }
     
-    // 보증금/선수금 입력 후 완료 조건 확인 (성함, 개인정보 동의 포함)
-    checkStep4Complete();
+    // 보증금/선수금 입력 후 다음 단계 버튼 활성화
+    step4NextBtn.disabled = !hasValue;
 }
 
 depositAmountInput?.addEventListener('input', checkDepositInput);
 advanceAmountInput?.addEventListener('input', checkDepositInput);
 
-// STEP 4: 성함 입력
+// STEP 4 다음 단계 버튼 (보증금 선택 후 다음 단계로 이동)
+step4NextBtn?.addEventListener('click', goToNextStep);
+
+// STEP 5: 성함 입력
 const nameInput = document.getElementById('nameInput');
+const step5NextBtn = document.getElementById('step5NextBtn');
+
 nameInput?.addEventListener('input', (e) => {
     surveyData.name = e.target.value.trim();
-    checkStep4Complete();
+    checkStep5Complete();
 });
 
-// STEP 4: 개인정보 동의 체크박스
+// STEP 5: 개인정보 동의 체크박스
 const privacyConsent = document.getElementById('privacyConsent');
 const thirdPartyConsent = document.getElementById('thirdPartyConsent');
 const marketingConsent = document.getElementById('marketingConsent');
 
 privacyConsent?.addEventListener('change', (e) => {
     surveyData.privacyConsent = e.target.checked;
-    checkStep4Complete();
+    checkStep5Complete();
 });
 
 thirdPartyConsent?.addEventListener('change', (e) => {
     surveyData.thirdPartyConsent = e.target.checked;
-    checkStep4Complete();
+    checkStep5Complete();
 });
 
 marketingConsent?.addEventListener('change', (e) => {
     surveyData.marketingConsent = e.target.checked;
-    checkStep4Complete();
+    checkStep5Complete();
 });
 
 // 개인정보 동의 링크 클릭 시 모달 열기
@@ -169,25 +174,20 @@ document.querySelectorAll('.consent-link').forEach(link => {
     });
 });
 
-// STEP 4 완료 조건 확인
-function checkStep4Complete() {
+// STEP 5 완료 조건 확인
+function checkStep5Complete() {
     const hasName = surveyData.name && surveyData.name.length > 0;
-    const hasDeposit = surveyData.deposit !== null;
-    const hasDepositAmount = surveyData.deposit === 'none' || 
-                             (surveyData.deposit === 'deposit' && surveyData.depositAmount) ||
-                             (surveyData.deposit === 'advance' && surveyData.advanceAmount);
     const allConsentsChecked = surveyData.privacyConsent && 
                                surveyData.thirdPartyConsent && 
                                surveyData.marketingConsent;
     
-    if (step4NextBtn) {
-        step4NextBtn.disabled = !(hasName && hasDeposit && hasDepositAmount && allConsentsChecked);
+    if (step5NextBtn) {
+        step5NextBtn.disabled = !(hasName && allConsentsChecked);
     }
 }
 
-// 보증금 선택 시 완료 조건 확인은 이미 위에서 처리됨
-
-step4NextBtn?.addEventListener('click', async () => {
+// STEP 5 다음 단계 버튼 (최종 제출)
+step5NextBtn?.addEventListener('click', async () => {
     // STEP 4에서 다음단계를 누르면 서버로 데이터 전송
     console.log('설문조사 데이터:', surveyData);
     

@@ -41,6 +41,9 @@
             <div class="step" data-step="5">
                 <span class="step-number">STEP 5</span>
             </div>
+            <div class="step" data-step="6">
+                <span class="step-number">STEP 6</span>
+            </div>
         </div>
 
         <!-- 설문조사 모달 -->
@@ -84,7 +87,7 @@
                 <button class="next-step-btn" id="step3NextBtn" disabled>다음단계</button>
             </div>
 
-            <!-- STEP 4: 보증금 유형, 성함, 개인정보 동의 -->
+            <!-- STEP 4: 보증금 유형 선택 -->
             <div class="survey-step" data-step="4">
                 <div class="step-header">신차 장기렌트 맛집 CMAUTOPLAN</div>
                 <h2 class="question">Q 보증금 유형을 선택해주세요.</h2>
@@ -105,8 +108,13 @@
                         </div>
                     </div>
                 </div>
-                
-                <h2 class="question" style="margin-top: 40px;">Q 성함을 입력 해주세요</h2>
+                <button class="next-step-btn" id="step4NextBtn" disabled>다음단계</button>
+            </div>
+
+            <!-- STEP 5: 성함 및 개인정보 동의 -->
+            <div class="survey-step" data-step="5">
+                <div class="step-header">신차 장기렌트 맛집 CMAUTOPLAN</div>
+                <h2 class="question">Q 성함을 입력 해주세요</h2>
                 <div class="input-group">
                     <label class="input-label">성함</label>
                     <input type="text" class="name-input" id="nameInput" placeholder="성함을 입력해주세요.">
@@ -137,11 +145,11 @@
                     </div>
                 </div>
 
-                <button class="next-step-btn" id="step4NextBtn" disabled>다음단계</button>
+                <button class="next-step-btn" id="step5NextBtn" disabled>다음단계</button>
             </div>
 
-            <!-- STEP 5: 완료 화면 (숨김 처리, 모달로 대체) -->
-            <div class="survey-step" data-step="5" style="display: none;">
+            <!-- STEP 6: 완료 화면 (숨김 처리, 모달로 대체) -->
+            <div class="survey-step" data-step="6" style="display: none;">
             </div>
         </div>
 
