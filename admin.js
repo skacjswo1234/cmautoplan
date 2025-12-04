@@ -220,12 +220,18 @@ function displayInquiries(data) {
     };
 
     const formattedDate = (dateString) => {
-        return new Date(dateString).toLocaleString('ko-KR', {
+        // 날짜 문자열을 Date 객체로 변환
+        const date = new Date(dateString);
+        
+        // 한국 시간대(Asia/Seoul, UTC+9)로 변환하여 포맷팅
+        return date.toLocaleString('ko-KR', {
+            timeZone: 'Asia/Seoul',
             year: 'numeric',
             month: '2-digit',
             day: '2-digit',
             hour: '2-digit',
-            minute: '2-digit'
+            minute: '2-digit',
+            hour12: false
         });
     };
 
