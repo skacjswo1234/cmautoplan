@@ -437,19 +437,43 @@ function updateCountdown() {
         
         if (!dayEl || !hourEl || !minEl || !secEl) return;
         
-        // 목표 시간 설정 (30일 후)
-        const targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() + 30);
-        targetDate.setHours(1, 15, 39, 0);
-        
         const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth();
+        
+        // 현재 월의 마지막 날 계산 (다음 달의 0일 = 현재 달의 마지막 날)
+        const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+        
+        // 목표 시간 설정: 현재 월의 마지막 날 23:59:59
+        const targetDate = new Date(currentYear, currentMonth + 1, 0, 23, 59, 59, 999);
+        
         const diff = targetDate - now;
         
         if (diff <= 0) {
-            dayEl.textContent = '0일';
-            hourEl.textContent = '0';
-            minEl.textContent = '0';
-            secEl.textContent = '0';
+            // 이미 마지막 날이 지났다면 다음 달 마지막 날로 설정
+            const nextMonth = currentMonth + 1;
+            const nextYear = nextMonth > 11 ? currentYear + 1 : currentYear;
+            const adjustedMonth = nextMonth > 11 ? 0 : nextMonth;
+            const nextLastDay = new Date(nextYear, adjustedMonth + 1, 0, 23, 59, 59, 999);
+            const nextDiff = nextLastDay - now;
+            
+            if (nextDiff <= 0) {
+                dayEl.textContent = '0일';
+                hourEl.textContent = '0';
+                minEl.textContent = '0';
+                secEl.textContent = '0';
+                return;
+            }
+            
+            const days = Math.floor(nextDiff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((nextDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((nextDiff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((nextDiff % (1000 * 60)) / 1000);
+            
+            dayEl.innerHTML = `${days}<span>일</span>`;
+            hourEl.textContent = hours;
+            minEl.textContent = minutes;
+            secEl.textContent = seconds;
             return;
         }
         
