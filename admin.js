@@ -223,29 +223,17 @@ function displayInquiries(data) {
         if (!dateString) return '-';
         
         try {
-            // 날짜 문자열을 Date 객체로 변환
+            // 서버에서 이미 한국 시간으로 변환된 날짜를 포맷팅
+            // 형식: "2025-12-04 16:52:00"
             const date = new Date(dateString);
             
-            // Intl.DateTimeFormat을 사용하여 한국 시간대로 명시적 변환
-            const formatter = new Intl.DateTimeFormat('ko-KR', {
-                timeZone: 'Asia/Seoul',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: false
-            });
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
             
-            // 포맷팅된 날짜를 파싱하여 원하는 형식으로 변환
-            const parts = formatter.formatToParts(date);
-            const year = parts.find(p => p.type === 'year').value;
-            const month = parts.find(p => p.type === 'month').value;
-            const day = parts.find(p => p.type === 'day').value;
-            const hour = parts.find(p => p.type === 'hour').value;
-            const minute = parts.find(p => p.type === 'minute').value;
-            
-            return `${year}. ${month}. ${day}. ${hour}:${minute}`;
+            return `${year}. ${month}. ${day}. ${hours}:${minutes}`;
         } catch (error) {
             console.error('날짜 포맷팅 오류:', error, dateString);
             return dateString;

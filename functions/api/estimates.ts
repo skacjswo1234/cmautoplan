@@ -151,11 +151,44 @@ export async function onRequestGet(context: { env: Env; request: Request }): Pro
     const stmt = db.prepare(query);
     const result = await stmt.bind(...params).all();
 
+    // UTC 시간을 한국 시간(UTC+9)으로 변환하는 함수
+    const convertToKoreaTime = (dateString: string | null): string | null => {
+      if (!dateString) return null;
+      
+      try {
+        // UTC 시간을 Date 객체로 변환
+        const utcDate = new Date(dateString);
+        
+        // UTC 시간에 9시간(한국 시간대) 추가
+        const koreaTime = new Date(utcDate.getTime() + (9 * 60 * 60 * 1000));
+        
+        // YYYY-MM-DD HH:mm:ss 형식으로 변환
+        const year = koreaTime.getUTCFullYear();
+        const month = String(koreaTime.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(koreaTime.getUTCDate()).padStart(2, '0');
+        const hours = String(koreaTime.getUTCHours()).padStart(2, '0');
+        const minutes = String(koreaTime.getUTCMinutes()).padStart(2, '0');
+        const seconds = String(koreaTime.getUTCSeconds()).padStart(2, '0');
+        
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      } catch (error) {
+        console.error('날짜 변환 오류:', error);
+        return dateString;
+      }
+    };
+
+    // 결과 데이터의 날짜를 한국 시간으로 변환
+    const convertedData = result.results.map((item: any) => ({
+      ...item,
+      created_at: convertToKoreaTime(item.created_at),
+      updated_at: convertToKoreaTime(item.updated_at)
+    }));
+
     return new Response(
       JSON.stringify({ 
         success: true, 
-        data: result.results,
-        count: result.results.length 
+        data: convertedData,
+        count: convertedData.length 
       }),
       { 
         headers: { 
