@@ -217,17 +217,8 @@ step5NextBtn?.addEventListener('click', async () => {
         if (result.success) {
             console.log('견적 신청 완료:', result);
             
-            // Danggeun Market Code - 서비스 신청 트래킹
-            if (window.karrotPixel && typeof window.karrotPixel.track === 'function') {
-                try {
-                    window.karrotPixel.track('SubmitApplication');
-                    console.log('당근픽셀 SubmitApplication 트래킹 완료');
-                } catch (e) {
-                    console.error('당근픽셀 트래킹 오류:', e);
-                }
-            } else {
-                console.warn('당근픽셀이 로드되지 않았습니다.');
-            }
+            // Danggeun Market Code
+            window.karrotPixel.track('SubmitApplication');
             
             // 완료 모달 표시
             setTimeout(() => {
