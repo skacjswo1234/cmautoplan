@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /admin.js
+Disallow: /admin.css
+Disallow: /api/
+
+Sitemap: https://cmautoplan.com/sitemap.xml
+
