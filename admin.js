@@ -222,20 +222,34 @@ function displayInquiries(data) {
     const formattedDate = (dateString) => {
         if (!dateString) return '-';
         
-        // 날짜 문자열을 Date 객체로 변환 (UTC로 파싱)
-        const date = new Date(dateString);
-        
-        // UTC 시간을 한국 시간(UTC+9)으로 변환
-        const koreaTime = new Date(date.getTime() + (9 * 60 * 60 * 1000));
-        
-        // 한국 형식으로 포맷팅 (YYYY. MM. DD. HH:mm)
-        const year = koreaTime.getUTCFullYear();
-        const month = String(koreaTime.getUTCMonth() + 1).padStart(2, '0');
-        const day = String(koreaTime.getUTCDate()).padStart(2, '0');
-        const hours = String(koreaTime.getUTCHours()).padStart(2, '0');
-        const minutes = String(koreaTime.getUTCMinutes()).padStart(2, '0');
-        
-        return `${year}. ${month}. ${day}. ${hours}:${minutes}`;
+        try {
+            // 날짜 문자열을 Date 객체로 변환
+            const date = new Date(dateString);
+            
+            // Intl.DateTimeFormat을 사용하여 한국 시간대로 명시적 변환
+            const formatter = new Intl.DateTimeFormat('ko-KR', {
+                timeZone: 'Asia/Seoul',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+            
+            // 포맷팅된 날짜를 파싱하여 원하는 형식으로 변환
+            const parts = formatter.formatToParts(date);
+            const year = parts.find(p => p.type === 'year').value;
+            const month = parts.find(p => p.type === 'month').value;
+            const day = parts.find(p => p.type === 'day').value;
+            const hour = parts.find(p => p.type === 'hour').value;
+            const minute = parts.find(p => p.type === 'minute').value;
+            
+            return `${year}. ${month}. ${day}. ${hour}:${minute}`;
+        } catch (error) {
+            console.error('날짜 포맷팅 오류:', error, dateString);
+            return dateString;
+        }
     };
 
     // 데스크톱 테이블
