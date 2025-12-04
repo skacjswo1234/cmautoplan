@@ -1,9 +1,7 @@
 // Cloudflare Pages Functions API
 // POST /api/admin/login - 관리자 로그인
 
-interface Env {
-  'cmautoplan-db': D1Database;
-}
+import type { Env } from '../../types';
 
 export async function onRequestPost(context: { env: Env; request: Request }): Promise<Response> {
   const { env, request } = context;
