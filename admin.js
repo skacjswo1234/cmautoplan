@@ -220,19 +220,22 @@ function displayInquiries(data) {
     };
 
     const formattedDate = (dateString) => {
-        // 날짜 문자열을 Date 객체로 변환
+        if (!dateString) return '-';
+        
+        // 날짜 문자열을 Date 객체로 변환 (UTC로 파싱)
         const date = new Date(dateString);
         
-        // 한국 시간대(Asia/Seoul, UTC+9)로 변환하여 포맷팅
-        return date.toLocaleString('ko-KR', {
-            timeZone: 'Asia/Seoul',
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-        });
+        // UTC 시간을 한국 시간(UTC+9)으로 변환
+        const koreaTime = new Date(date.getTime() + (9 * 60 * 60 * 1000));
+        
+        // 한국 형식으로 포맷팅 (YYYY. MM. DD. HH:mm)
+        const year = koreaTime.getUTCFullYear();
+        const month = String(koreaTime.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(koreaTime.getUTCDate()).padStart(2, '0');
+        const hours = String(koreaTime.getUTCHours()).padStart(2, '0');
+        const minutes = String(koreaTime.getUTCMinutes()).padStart(2, '0');
+        
+        return `${year}. ${month}. ${day}. ${hours}:${minutes}`;
     };
 
     // 데스크톱 테이블
