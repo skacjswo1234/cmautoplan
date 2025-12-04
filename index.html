@@ -10,10 +10,21 @@
     <link rel="stylesheet" href="time-deal.css">
     
     <!-- Danggeun Market Code -->
-    <script src="https://karrot-pixel.business.daangn.com/0.4/karrot-pixel.umd.js"></script>
     <script>
-        window.karrotPixel.init('1764645569528244001');
-        window.karrotPixel.track('ViewPage');
+        (function() {
+            var script = document.createElement('script');
+            script.src = 'https://karrot-pixel.business.daangn.com/0.4/karrot-pixel.umd.js';
+            script.onload = function() {
+                if (window.karrotPixel) {
+                    window.karrotPixel.init('1764645569528244001');
+                    window.karrotPixel.track('ViewPage');
+                }
+            };
+            script.onerror = function() {
+                console.error('당근픽셀 스크립트 로드 실패');
+            };
+            document.head.appendChild(script);
+        })();
     </script>
     <!-- End Danggeun Market Code -->
 </head>
