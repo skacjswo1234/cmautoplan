@@ -5,13 +5,13 @@
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
     <url>
         <loc>https://cmautoplan.com/</loc>
-        <lastmod>2025-01-27</lastmod>
+        <lastmod>2025-12-05</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
         <loc>https://cmautoplan.com/index.html</loc>
-        <lastmod>2025-01-27</lastmod>
+        <lastmod>2025-12-05</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
