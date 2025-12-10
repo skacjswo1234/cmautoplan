@@ -26,10 +26,15 @@ export async function onRequestPost(context: { env: Env; request: Request }): Pr
     // 요청 본문 파싱
     const body = await request.json();
     
-    // 필수 필드 검증
+    // 필수 필드 추출 및 기본값 설정
     const { productType, vehicle, phone, name, deposit, depositAmount, advanceAmount, privacyConsent, thirdPartyConsent, marketingConsent } = body;
     
-    if (!productType || !vehicle || !phone || !name || !deposit) {
+    // productType과 deposit이 null이거나 없을 경우 기본값 설정
+    const finalProductType = productType || 'rent';
+    const finalDeposit = deposit || 'none';
+    
+    // 필수 필드 검증 (vehicle, phone, name은 반드시 필요)
+    if (!vehicle || !phone || !name) {
       return new Response(
         JSON.stringify({ 
           success: false, 
@@ -73,9 +78,9 @@ export async function onRequestPost(context: { env: Env; request: Request }): Pr
 
     // 보증금/선수금 금액 설정
     let finalDepositAmount = null;
-    if (deposit === 'deposit' && depositAmount) {
+    if (finalDeposit === 'deposit' && depositAmount) {
       finalDepositAmount = depositAmount;
-    } else if (deposit === 'advance' && advanceAmount) {
+    } else if (finalDeposit === 'advance' && advanceAmount) {
       finalDepositAmount = advanceAmount;
     }
 
@@ -86,11 +91,11 @@ export async function onRequestPost(context: { env: Env; request: Request }): Pr
       `INSERT INTO estimates (product_type, vehicle, phone, name, deposit_type, deposit_amount, privacy_consent, third_party_consent, marketing_consent, status)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')`
     ).bind(
-      productType,
+      finalProductType,
       vehicle,
       phone.replace(/[^0-9]/g, ''), // 숫자만 저장
       name,
-      deposit,
+      finalDeposit,
       finalDepositAmount,
       privacyConsent ? 1 : 0,
       thirdPartyConsent ? 1 : 0,
