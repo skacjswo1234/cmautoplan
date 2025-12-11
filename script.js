@@ -214,11 +214,20 @@ step5NextBtn?.addEventListener('click', async () => {
 
         const result = await response.json();
         
+        // 전환 이벤트는 사용자가 제출 버튼을 눌렀을 때 실행 (API 성공 여부와 무관)
+        try {
+            if (window.karrotPixel && typeof window.karrotPixel.track === 'function') {
+                window.karrotPixel.track('SubmitApplication');
+                console.log('당근마켓 픽셀 전환 이벤트 전송 완료');
+            } else {
+                console.warn('당근마켓 픽셀이 로드되지 않았습니다.');
+            }
+        } catch (pixelError) {
+            console.error('당근마켓 픽셀 전환 이벤트 오류:', pixelError);
+        }
+        
         if (result.success) {
             console.log('견적 신청 완료:', result);
-            
-            // Danggeun Market Code
-            window.karrotPixel.track('SubmitApplication');
             
             // 완료 모달 표시
             setTimeout(() => {
@@ -227,9 +236,26 @@ step5NextBtn?.addEventListener('click', async () => {
         } else {
             console.error('견적 신청 실패:', result.error);
             alert('견적 신청 중 오류가 발생했습니다. 다시 시도해주세요.');
+            // 실패해도 완료 모달은 표시 (사용자 경험을 위해)
+            setTimeout(() => {
+                openCompletionModal();
+            }, 300);
         }
     } catch (error) {
         console.error('API 호출 오류:', error);
+        
+        // 전환 이벤트는 사용자가 제출 버튼을 눌렀을 때 실행 (네트워크 오류와 무관)
+        try {
+            if (window.karrotPixel && typeof window.karrotPixel.track === 'function') {
+                window.karrotPixel.track('SubmitApplication');
+                console.log('당근마켓 픽셀 전환 이벤트 전송 완료 (오류 발생 후)');
+            } else {
+                console.warn('당근마켓 픽셀이 로드되지 않았습니다.');
+            }
+        } catch (pixelError) {
+            console.error('당근마켓 픽셀 전환 이벤트 오류:', pixelError);
+        }
+        
         // 오류가 발생해도 완료 모달은 표시 (사용자 경험을 위해)
         setTimeout(() => {
             openCompletionModal();

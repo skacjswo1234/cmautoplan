@@ -71,10 +71,28 @@
     <link rel="stylesheet" href="time-deal.css">
     
     <!-- Danggeun Market Code -->
-    <script src="https://karrot-pixel.business.daangn.com/karrot-pixel.js"></script>
     <script>
-        window.karrotPixel.init('1764833601025600001');
-        window.karrotPixel.track('ViewPage');
+        // 스크립트 로드 및 초기화 함수
+        (function() {
+            var script = document.createElement('script');
+            script.src = 'https://karrot-pixel.business.daangn.com/karrot-pixel.js';
+            script.async = true;
+            script.onload = function() {
+                try {
+                    if (window.karrotPixel) {
+                        window.karrotPixel.init('1764833601025600001');
+                        window.karrotPixel.track('ViewPage');
+                        console.log('당근마켓 픽셀 초기화 완료');
+                    }
+                } catch (error) {
+                    console.error('당근마켓 픽셀 초기화 오류:', error);
+                }
+            };
+            script.onerror = function() {
+                console.error('당근마켓 픽셀 스크립트 로드 실패');
+            };
+            document.head.appendChild(script);
+        })();
     </script>
     <!-- End Danggeun Market Code -->
 </head>
