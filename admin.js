@@ -177,11 +177,11 @@ async function loadInquiries() {
         if (result.success) {
             displayInquiries(result.data);
         } else {
-            tbody.innerHTML = '<tr><td colspan="10" class="loading">데이터를 불러오는데 실패했습니다.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="11" class="loading">데이터를 불러오는데 실패했습니다.</td></tr>';
         }
     } catch (error) {
         console.error('Error loading inquiries:', error);
-        tbody.innerHTML = '<tr><td colspan="9" class="loading">오류가 발생했습니다.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="11" class="loading">오류가 발생했습니다.</td></tr>';
     }
 }
 
@@ -192,7 +192,7 @@ function displayInquiries(data) {
     const isMobile = window.innerWidth <= 768;
     
     if (data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="10" class="loading">데이터가 없습니다.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="11" class="loading">데이터가 없습니다.</td></tr>';
         if (mobileCardList) {
             mobileCardList.innerHTML = '<div class="loading">데이터가 없습니다.</div>';
         }
@@ -217,6 +217,19 @@ function displayInquiries(data) {
             'cancelled': '취소'
         };
         return statuses[status] || status;
+    };
+    
+    const trafficSourceText = (source) => {
+        const sources = {
+            'danggeun': '당근',
+            'direct': '직접유입',
+            'search': '검색엔진',
+            'other': '기타',
+            null: '-',
+            undefined: '-',
+            '': '-'
+        };
+        return sources[source] || '-';
     };
 
     const formattedDate = (dateString) => {
@@ -253,6 +266,7 @@ function displayInquiries(data) {
                 <td>${item.deposit_amount || '-'}</td>
                 <td><span class="status-badge ${item.status}">${statusText(item.status)}</span></td>
                 <td>${formattedDate(item.created_at)}</td>
+                <td>${trafficSourceText(item.traffic_source)}</td>
                 <td>
                     <button class="btn-action" onclick="openStatusModal(${item.id}, '${item.status}')">상태변경</button>
                     <button class="btn-action btn-delete" onclick="deleteInquiry(${item.id})">삭제</button>
@@ -299,6 +313,10 @@ function displayInquiries(data) {
                     <div class="inquiry-card-field">
                         <span class="inquiry-card-label">신청일시</span>
                         <span class="inquiry-card-value">${formattedDate(item.created_at)}</span>
+                    </div>
+                    <div class="inquiry-card-field">
+                        <span class="inquiry-card-label">유입경로</span>
+                        <span class="inquiry-card-value">${trafficSourceText(item.traffic_source)}</span>
                     </div>
                     <div class="inquiry-card-actions">
                         <button class="btn-action" onclick="openStatusModal(${item.id}, '${item.status}')">상태변경</button>

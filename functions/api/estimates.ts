@@ -27,7 +27,7 @@ export async function onRequestPost(context: { env: Env; request: Request }): Pr
     const body = await request.json();
     
     // 필수 필드 추출 및 기본값 설정
-    const { productType, vehicle, phone, name, deposit, depositAmount, advanceAmount, privacyConsent, thirdPartyConsent, marketingConsent } = body;
+    const { productType, vehicle, phone, name, deposit, depositAmount, advanceAmount, privacyConsent, thirdPartyConsent, marketingConsent, trafficSource } = body;
     
     // productType과 deposit이 null이거나 없을 경우 기본값 설정
     const finalProductType = productType || 'rent';
@@ -87,9 +87,12 @@ export async function onRequestPost(context: { env: Env; request: Request }): Pr
     // D1 데이터베이스에 삽입
     const db = env['cmautoplan-db'];
     
+    // 유입 경로 처리 (null 또는 빈 값이면 null로 저장)
+    const finalTrafficSource = trafficSource && trafficSource.trim() !== '' ? trafficSource.trim() : null;
+
     const result = await db.prepare(
-      `INSERT INTO estimates (product_type, vehicle, phone, name, deposit_type, deposit_amount, privacy_consent, third_party_consent, marketing_consent, status)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')`
+      `INSERT INTO estimates (product_type, vehicle, phone, name, deposit_type, deposit_amount, privacy_consent, third_party_consent, marketing_consent, traffic_source, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')`
     ).bind(
       finalProductType,
       vehicle,
@@ -99,7 +102,8 @@ export async function onRequestPost(context: { env: Env; request: Request }): Pr
       finalDepositAmount,
       privacyConsent ? 1 : 0,
       thirdPartyConsent ? 1 : 0,
-      marketingConsent ? 1 : 0
+      marketingConsent ? 1 : 0,
+      finalTrafficSource
     ).run();
 
     return new Response(

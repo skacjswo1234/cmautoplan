@@ -8,11 +8,66 @@ const surveyData = {
     privacyConsent: false,
     thirdPartyConsent: false,
     marketingConsent: false,
-    personalInfo: {}
+    personalInfo: {},
+    trafficSource: null
 };
 
 let currentStep = 1;
 const totalSteps = 6;
+
+// URL 파라미터에서 유입 경로 추출
+// 예시: ?mlvch-dgn&kmckid=5ee9e94f-e7b9-4e93-b026-f852f6a43940&af_force_deeplink=true
+function getTrafficSource() {
+    try {
+        const searchParams = window.location.search;
+        
+        // 쿼리 스트링이 없으면 직접 유입
+        if (!searchParams || searchParams.length === 0) {
+            return 'direct';
+        }
+        
+        // 방법 1: URLSearchParams 사용 (표준 방법, 가장 정확)
+        // ?mlvch-dgn 형태 (값 없음) 또는 ?mlvch-dgn=value 형태 모두 처리
+        try {
+            const urlParams = new URLSearchParams(searchParams);
+            
+            // has() 메서드는 값이 있든 없든 키가 존재하면 true 반환
+            // ?mlvch-dgn → true
+            // ?mlvch-dgn&kmckid=... → true
+            // ?kmckid=...&mlvch-dgn → true
+            if (urlParams.has('mlvch-dgn')) {
+                console.log('✅ 당근마켓 유입 감지 (mlvch-dgn 파라미터 발견)');
+                return 'danggeun';
+            }
+        } catch (e) {
+            console.warn('URLSearchParams 파싱 오류, 문자열 검색으로 대체:', e);
+        }
+        
+        // 방법 2: 문자열 검색 (추가 안전장치)
+        // URLSearchParams가 작동하지 않는 경우를 대비
+        // 정확한 파라미터 매칭을 위해 패턴 검색
+        const mlvchPattern = /[?&]mlvch-dgn(?=[&=]|$)/;
+        if (mlvchPattern.test(searchParams)) {
+            console.log('✅ 당근마켓 유입 감지 (문자열 패턴 매칭)');
+            return 'danggeun';
+        }
+        
+        // 추후 다른 광고 업체 추가 가능
+        // if (urlParams.has('other-source') || searchParams.includes('other-source')) {
+        //     return 'other';
+        // }
+        
+        // 기본값: 직접 유입
+        return 'direct';
+    } catch (error) {
+        console.error('유입 경로 추출 오류:', error);
+        return 'direct';
+    }
+}
+
+// 페이지 로드 시 유입 경로 저장
+surveyData.trafficSource = getTrafficSource();
+console.log('📊 최종 유입 경로:', surveyData.trafficSource === 'danggeun' ? '당근마켓' : '직접유입');
 
 // STEP 1: 상품 유형 선택
 const optionCards = document.querySelectorAll('.option-card');
@@ -209,6 +264,7 @@ step5NextBtn?.addEventListener('click', async () => {
                 privacyConsent: surveyData.privacyConsent,
                 thirdPartyConsent: surveyData.thirdPartyConsent,
                 marketingConsent: surveyData.marketingConsent,
+                trafficSource: surveyData.trafficSource || null,
             }),
         });
 
