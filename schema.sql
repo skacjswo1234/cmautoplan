@@ -40,6 +40,9 @@ ALTER TABLE estimates ADD COLUMN third_party_consent INTEGER DEFAULT 0;
 -- 4. 마케팅 활용 및 광고성 정보 수신 동의 필드 추가
 ALTER TABLE estimates ADD COLUMN marketing_consent INTEGER DEFAULT 0;
 
+-- 5. 유입 URL 저장 필드 추가 (전체 URL 또는 쿼리 스트링)
+ALTER TABLE estimates ADD COLUMN source_url TEXT;
+
 -- 관리자 테이블
 CREATE TABLE IF NOT EXISTS admin (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

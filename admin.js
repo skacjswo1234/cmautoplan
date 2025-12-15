@@ -177,11 +177,11 @@ async function loadInquiries() {
         if (result.success) {
             displayInquiries(result.data);
         } else {
-            tbody.innerHTML = '<tr><td colspan="11" class="loading">데이터를 불러오는데 실패했습니다.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="12" class="loading">데이터를 불러오는데 실패했습니다.</td></tr>';
         }
     } catch (error) {
         console.error('Error loading inquiries:', error);
-        tbody.innerHTML = '<tr><td colspan="11" class="loading">오류가 발생했습니다.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="12" class="loading">오류가 발생했습니다.</td></tr>';
     }
 }
 
@@ -192,12 +192,22 @@ function displayInquiries(data) {
     const isMobile = window.innerWidth <= 768;
     
     if (data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="11" class="loading">데이터가 없습니다.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="12" class="loading">데이터가 없습니다.</td></tr>';
         if (mobileCardList) {
             mobileCardList.innerHTML = '<div class="loading">데이터가 없습니다.</div>';
         }
         return;
     }
+    
+    // URL 표시 함수 (긴 URL은 잘라서 표시)
+    const formatUrl = (url) => {
+        if (!url || url.trim() === '') return '-';
+        // URL이 50자 이상이면 잘라서 표시
+        if (url.length > 50) {
+            return url.substring(0, 50) + '...';
+        }
+        return url;
+    };
 
     const productType = (type) => type === 'rent' ? '장기렌트' : '리스';
     const depositType = (type) => {
@@ -267,6 +277,11 @@ function displayInquiries(data) {
                 <td><span class="status-badge ${item.status}">${statusText(item.status)}</span></td>
                 <td>${formattedDate(item.created_at)}</td>
                 <td>${trafficSourceText(item.traffic_source)}</td>
+                <td title="${item.source_url || '-'}">
+                    <span style="cursor: help; text-decoration: underline; color: #0066cc;">
+                        ${formatUrl(item.source_url)}
+                    </span>
+                </td>
                 <td>
                     <button class="btn-action" onclick="openStatusModal(${item.id}, '${item.status}')">상태변경</button>
                     <button class="btn-action btn-delete" onclick="deleteInquiry(${item.id})">삭제</button>
@@ -318,6 +333,14 @@ function displayInquiries(data) {
                         <span class="inquiry-card-label">유입경로</span>
                         <span class="inquiry-card-value">${trafficSourceText(item.traffic_source)}</span>
                     </div>
+                    ${item.source_url ? `
+                    <div class="inquiry-card-field">
+                        <span class="inquiry-card-label">유입URL</span>
+                        <span class="inquiry-card-value" style="word-break: break-all; font-size: 0.85em; color: #666;">
+                            ${item.source_url}
+                        </span>
+                    </div>
+                    ` : ''}
                     <div class="inquiry-card-actions">
                         <button class="btn-action" onclick="openStatusModal(${item.id}, '${item.status}')">상태변경</button>
                         <button class="btn-action btn-delete" onclick="deleteInquiry(${item.id})">삭제</button>

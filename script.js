@@ -9,7 +9,8 @@ const surveyData = {
     thirdPartyConsent: false,
     marketingConsent: false,
     personalInfo: {},
-    trafficSource: null
+    trafficSource: null,
+    sourceUrl: null
 };
 
 let currentStep = 1;
@@ -65,9 +66,12 @@ function getTrafficSource() {
     }
 }
 
-// 페이지 로드 시 유입 경로 저장
+// 페이지 로드 시 유입 경로 및 URL 저장
 surveyData.trafficSource = getTrafficSource();
+// 전체 URL 저장 (쿼리 스트링 포함)
+surveyData.sourceUrl = window.location.href;
 console.log('📊 최종 유입 경로:', surveyData.trafficSource === 'danggeun' ? '당근마켓' : '직접유입');
+console.log('🔗 유입 URL:', surveyData.sourceUrl);
 
 // STEP 1: 상품 유형 선택
 const optionCards = document.querySelectorAll('.option-card');
@@ -265,6 +269,7 @@ step5NextBtn?.addEventListener('click', async () => {
                 thirdPartyConsent: surveyData.thirdPartyConsent,
                 marketingConsent: surveyData.marketingConsent,
                 trafficSource: surveyData.trafficSource || null,
+                sourceUrl: surveyData.sourceUrl || null,
             }),
         });
 

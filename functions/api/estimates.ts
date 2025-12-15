@@ -27,7 +27,7 @@ export async function onRequestPost(context: { env: Env; request: Request }): Pr
     const body = await request.json();
     
     // 필수 필드 추출 및 기본값 설정
-    const { productType, vehicle, phone, name, deposit, depositAmount, advanceAmount, privacyConsent, thirdPartyConsent, marketingConsent, trafficSource } = body;
+    const { productType, vehicle, phone, name, deposit, depositAmount, advanceAmount, privacyConsent, thirdPartyConsent, marketingConsent, trafficSource, sourceUrl } = body;
     
     // productType과 deposit이 null이거나 없을 경우 기본값 설정
     const finalProductType = productType || 'rent';
@@ -89,10 +89,18 @@ export async function onRequestPost(context: { env: Env; request: Request }): Pr
     
     // 유입 경로 처리 (null 또는 빈 값이면 null로 저장)
     const finalTrafficSource = trafficSource && trafficSource.trim() !== '' ? trafficSource.trim() : null;
+    
+    // 유입 URL 처리 (null 또는 빈 값이면 null로 저장, 최대 길이 제한)
+    let finalSourceUrl = null;
+    if (sourceUrl && sourceUrl.trim() !== '') {
+      // URL 길이 제한 (2000자, 데이터베이스 TEXT 필드 제한 고려)
+      const trimmedUrl = sourceUrl.trim();
+      finalSourceUrl = trimmedUrl.length > 2000 ? trimmedUrl.substring(0, 2000) : trimmedUrl;
+    }
 
     const result = await db.prepare(
-      `INSERT INTO estimates (product_type, vehicle, phone, name, deposit_type, deposit_amount, privacy_consent, third_party_consent, marketing_consent, traffic_source, status)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')`
+      `INSERT INTO estimates (product_type, vehicle, phone, name, deposit_type, deposit_amount, privacy_consent, third_party_consent, marketing_consent, traffic_source, source_url, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')`
     ).bind(
       finalProductType,
       vehicle,
@@ -103,7 +111,8 @@ export async function onRequestPost(context: { env: Env; request: Request }): Pr
       privacyConsent ? 1 : 0,
       thirdPartyConsent ? 1 : 0,
       marketingConsent ? 1 : 0,
-      finalTrafficSource
+      finalTrafficSource,
+      finalSourceUrl
     ).run();
 
     return new Response(
