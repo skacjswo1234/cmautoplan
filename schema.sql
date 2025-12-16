@@ -43,6 +43,9 @@ ALTER TABLE estimates ADD COLUMN marketing_consent INTEGER DEFAULT 0;
 -- 5. 유입 URL 저장 필드 추가 (전체 URL 또는 쿼리 스트링)
 ALTER TABLE estimates ADD COLUMN source_url TEXT;
 
+-- 6. 유입 경로 저장 필드 추가 (당근마켓: 'danggeun', 직접유입: 'direct')
+ALTER TABLE estimates ADD COLUMN traffic_source TEXT;
+
 -- 관리자 테이블
 CREATE TABLE IF NOT EXISTS admin (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

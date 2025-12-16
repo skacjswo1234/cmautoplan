@@ -229,7 +229,13 @@ function displayInquiries(data) {
         return statuses[status] || status;
     };
     
-    const trafficSourceText = (source) => {
+    const trafficSourceText = (source, sourceUrl) => {
+        // 유입 URL에 mlvch-dgn 또는 mlvch-dgnsa가 포함되어 있으면 당근으로 표시
+        if (sourceUrl && (sourceUrl.includes('mlvch-dgn') || sourceUrl.includes('mlvch-dgnsa'))) {
+            return '당근';
+        }
+        
+        // 기존 traffic_source 값 확인
         const sources = {
             'danggeun': '당근',
             'direct': '직접유입',
@@ -276,7 +282,7 @@ function displayInquiries(data) {
                 <td>${item.deposit_amount || '-'}</td>
                 <td><span class="status-badge ${item.status}">${statusText(item.status)}</span></td>
                 <td>${formattedDate(item.created_at)}</td>
-                <td>${trafficSourceText(item.traffic_source)}</td>
+                <td>${trafficSourceText(item.traffic_source, item.source_url)}</td>
                 <td title="${item.source_url || '-'}">
                     <span style="cursor: help; text-decoration: underline; color: #0066cc;">
                         ${formatUrl(item.source_url)}
@@ -331,7 +337,7 @@ function displayInquiries(data) {
                     </div>
                     <div class="inquiry-card-field">
                         <span class="inquiry-card-label">유입경로</span>
-                        <span class="inquiry-card-value">${trafficSourceText(item.traffic_source)}</span>
+                        <span class="inquiry-card-value">${trafficSourceText(item.traffic_source, item.source_url)}</span>
                     </div>
                     ${item.source_url ? `
                     <div class="inquiry-card-field">
